@@ -29,5 +29,10 @@ namespace Services
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+
+        //public override Task<ClaimsIdentity> CreateUserIdentityAsync(User user)
+        //{
+        //    return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+        //}
     }
 }

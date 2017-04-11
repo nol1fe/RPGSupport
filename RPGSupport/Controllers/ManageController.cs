@@ -23,19 +23,15 @@ namespace RPGSupport.Controllers
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
+                return _signInManager;
             }
         }
 
@@ -43,12 +39,9 @@ namespace RPGSupport.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager;
             }
-            private set
-            {
-                _userManager = value;
-            }
+
         }
 
         //
@@ -64,17 +57,15 @@ namespace RPGSupport.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
 
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
-                //PhoneNumber = await UserManager.GetPhoneNumberAsync(parsedId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(parsedId),
-                Logins = await UserManager.GetLoginsAsync(parsedId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                //PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(userId),
+                Logins = await UserManager.GetLoginsAsync(userId),
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId())
             };
             return View(model);
         }
@@ -86,15 +77,13 @@ namespace RPGSupport.Controllers
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
 
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
 
             ManageMessageId? message;
-            var result = await UserManager.RemoveLoginAsync(parsedId, new UserLoginInfo(loginProvider, providerKey));
+            var result = await UserManager.RemoveLoginAsync(userId, new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(parsedId);
+                var user = await UserManager.FindByIdAsync(userId);
                 if (user != null)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -122,15 +111,15 @@ namespace RPGSupport.Controllers
         //public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         //{
         //    var userId = User.Identity.GetUserId();
-        //    var parsedId = 0;
-        //    Int32.TryParse(userId, out parsedId);
+        //    var userId = 0;
+        //    Int32.TryParse(userId, out userId);
 
         //    if (!ModelState.IsValid)
         //    {
         //        return View(model);
         //    }
         //    // Generate the token and send it
-        //    var code = await UserManager.GenerateChangePhoneNumberTokenAsync(parsedId, model.Number);
+        //    var code = await UserManager.GenerateChangePhoneNumberTokenAsync(userId, model.Number);
         //    if (UserManager.SmsService != null)
         //    {
         //        var message = new IdentityMessage
@@ -149,12 +138,12 @@ namespace RPGSupport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
 
-            await UserManager.SetTwoFactorEnabledAsync(parsedId, true);
-            var user = await UserManager.FindByIdAsync(parsedId);
+
+            var userId = User.Identity.GetUserId<int>();
+
+            await UserManager.SetTwoFactorEnabledAsync(userId, true);
+            var user = await UserManager.FindByIdAsync(userId);
             if (user != null)
             {
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -168,12 +157,11 @@ namespace RPGSupport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
 
-            await UserManager.SetTwoFactorEnabledAsync(parsedId, false);
-            var user = await UserManager.FindByIdAsync(parsedId);
+
+            await UserManager.SetTwoFactorEnabledAsync(userId, false);
+            var user = await UserManager.FindByIdAsync(userId);
             if (user != null)
             {
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -185,11 +173,11 @@ namespace RPGSupport.Controllers
         // GET: /Manage/VerifyPhoneNumber
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
 
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(parsedId, phoneNumber);
+
+
+            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(userId, phoneNumber);
             // Send an SMS through the SMS provider to verify the phone number
             return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
         }
@@ -200,18 +188,18 @@ namespace RPGSupport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
+
+
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePhoneNumberAsync(parsedId, model.PhoneNumber, model.Code);
+            var result = await UserManager.ChangePhoneNumberAsync(userId, model.PhoneNumber, model.Code);
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(parsedId);
+                var user = await UserManager.FindByIdAsync(userId);
                 if (user != null)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -229,16 +217,16 @@ namespace RPGSupport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemovePhoneNumber()
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
 
-            var result = await UserManager.SetPhoneNumberAsync(parsedId, null);
+
+
+            var result = await UserManager.SetPhoneNumberAsync(userId, null);
             if (!result.Succeeded)
             {
                 return RedirectToAction("Index", new { Message = ManageMessageId.Error });
             }
-            var user = await UserManager.FindByIdAsync(parsedId);
+            var user = await UserManager.FindByIdAsync(userId);
             if (user != null)
             {
                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -259,18 +247,18 @@ namespace RPGSupport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
+
+
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(parsedId, model.OldPassword, model.NewPassword);
+            var result = await UserManager.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(parsedId);
+                var user = await UserManager.FindByIdAsync(userId);
                 if (user != null)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -294,16 +282,16 @@ namespace RPGSupport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
+            ;
+
 
             if (ModelState.IsValid)
             {
-                var result = await UserManager.AddPasswordAsync(parsedId, model.NewPassword);
+                var result = await UserManager.AddPasswordAsync(userId, model.NewPassword);
                 if (result.Succeeded)
                 {
-                    var user = await UserManager.FindByIdAsync(parsedId);
+                    var user = await UserManager.FindByIdAsync(userId);
                     if (user != null)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -321,20 +309,20 @@ namespace RPGSupport.Controllers
         // GET: /Manage/ManageLogins
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
+            ;
+
 
             ViewBag.StatusMessage =
                 message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
-            var user = await UserManager.FindByIdAsync(parsedId);
+            var user = await UserManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return View("Error");
             }
-            var userLogins = await UserManager.GetLoginsAsync(parsedId);
+            var userLogins = await UserManager.GetLoginsAsync(userId);
             var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
             ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
             return View(new ManageLoginsViewModel
@@ -358,16 +346,15 @@ namespace RPGSupport.Controllers
         // GET: /Manage/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            var userId = User.Identity.GetUserId<int>();
+
 
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
             {
                 return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
             }
-            var result = await UserManager.AddLoginAsync(parsedId, loginInfo.Login);
+            var result = await UserManager.AddLoginAsync(userId, loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
@@ -404,11 +391,9 @@ namespace RPGSupport.Controllers
 
         private bool HasPassword()
         {
-            var userId = User.Identity.GetUserId();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
-
-            var user = UserManager.FindById(parsedId);
+            var userId = User.Identity.GetUserId<int>();
+            //var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
             if (user != null)
             {
                 return user.PasswordHash != null;
@@ -419,10 +404,10 @@ namespace RPGSupport.Controllers
         //private bool HasPhoneNumber()
         //{
         //    var userId = User.Identity.GetUserId();
-        //    var parsedId = 0;
-        //    Int32.TryParse(userId, out parsedId);
+        //    var userId = 0;
+        //    Int32.TryParse(userId, out userId);
 
-        //    var user = UserManager.FindById(parsedId);
+        //    var user = UserManager.FindById(userId);
         //    if (user != null)
         //    {
         //        return user.PhoneNumber != null;

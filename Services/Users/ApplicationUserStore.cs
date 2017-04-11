@@ -9,9 +9,21 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using DataAccess;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Services
 {
+    //public class ApplicationUserStore : UserStore<User>
+    //{
+    //    private RPGSupportDb context;
+
+    //    public ApplicationUserStore()
+    //    {
+    //      context = new RPGSupportDb();
+
+    //    }
+    //}
+
     public class ApplicationUserStore : IUserStore<User, int>, IUserClaimStore<User, int>, IUserLoginStore<User, int>, IUserRoleStore<User, int>, IUserPasswordStore<User, int>, IUserTwoFactorStore<User, int>, IUserEmailStore<User, int>, IUserLockoutStore<User, int>, IUserSecurityStampStore<User, int>
     {
         private RPGSupportDb context;
@@ -65,7 +77,7 @@ namespace Services
         public Task<User> FindByNameAsync(string userName)
         {
             return context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
-            
+
         }
 
         public Task<int> GetAccessFailedCountAsync(User user)

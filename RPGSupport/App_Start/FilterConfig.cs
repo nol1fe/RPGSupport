@@ -1,7 +1,10 @@
-﻿using System.Web;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
-namespace RPGSupport
+namespace RPGSupport.App_Start
 {
     public class FilterConfig
     {
