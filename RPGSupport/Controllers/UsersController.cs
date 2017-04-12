@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using DataAccess;
 using Entities;
 using DataAccess.UnitOfWork;
+using Interfaces.UnitOfWork;
 
 namespace RPGSupport.Controllers
 {
@@ -19,7 +20,12 @@ namespace RPGSupport.Controllers
 
 
         //private RPGSupportDb db = new RPGSupportDb();
-        private UnitOfWork unitOfWork = new UnitOfWork();
+        private IUnitOfWork unitOfWork;
+
+        public UsersController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
 
         // GET: Users
         public ActionResult Index()
@@ -93,7 +99,7 @@ namespace RPGSupport.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.Repository<User>().Edit(user);
-                unitOfWork.SaveChanges();
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -123,7 +129,7 @@ namespace RPGSupport.Controllers
             //User user = db.Users.Find(id);
             var user = unitOfWork.Repository<User>().GetById(id);
             unitOfWork.Repository<User>().Delete(user);
-            unitOfWork.SaveChanges();
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 

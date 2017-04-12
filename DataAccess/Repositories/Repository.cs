@@ -6,45 +6,88 @@ using System.IdentityModel.Metadata;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
-    public class Repository<TEntity> : RepositoryBase, IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-
-        private DbSet<TEntity> dbset;
-        public Repository()
-
+        private RPGSupportDb _context;
+        private DbSet<TEntity> _dbset;
+        public Repository(RPGSupportDb context)
         {
-            dbset = Database.Set<TEntity>();
+            this._context = context;
+            _dbset = _context.Set<TEntity>();
         }
-        public TEntity GetById(int id)
+
+        public List<TEntity> GetAll()
         {
-            return dbset.Find(id);
+            return _dbset.ToList();
         }
         public void Delete(TEntity entity)
         {
-            Database.Entry(entity).State = EntityState.Deleted;
+            _dbset.Remove(entity);
         }
 
         public void Edit(TEntity entity)
         {
-            Database.Entry(entity).State = EntityState.Modified;
+            _dbset.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
         }
 
-        //public IQueryable<TEntity> GetAll()
-        //{
-        //    return dbset;
-        //}
+        public List<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbset.Where(predicate).ToList();
+        }
+
+        public TEntity GetById(int id)
+        {
+            return _dbset.Find(id);
+        }
+
+        public TEntity GetSingle(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            var entities = StartQuery(includeProperties);
+            return _dbset.FirstOrDefault(predicate);
+        }
 
         public void Insert(TEntity entity)
         {
-            dbset.Add(entity);
+            _dbset.Add(entity);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public List<TEntity> ToList(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return dbset.ToList();
+            var entities = StartQuery(includeProperties);
+            return entities.ToList();
+
+        }
+
+        public IQueryable<TEntity> StartQuery(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> entities = _dbset;
+            foreach (var includeProperty in includeProperties)
+            {
+                entities = entities.Include(includeProperty);
+            }
+            return entities.AsNoTracking();
+        }
+
+        public Task<List<TEntity>> FindByAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbset.Where(predicate).ToListAsync();
+        }
+
+        public Task<List<TEntity>> ToListAsync(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            var entities = StartQuery(includeProperties);
+            return entities.ToListAsync();
+        }
+
+        public Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            var entities = StartQuery(includeProperties);
+            return _dbset.FirstOrDefaultAsync(predicate);
         }
     }
 }

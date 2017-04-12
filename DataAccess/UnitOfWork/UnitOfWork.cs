@@ -6,54 +6,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces.Repositories;
+using System.Data.Entity;
 
 namespace DataAccess.UnitOfWork
 {
-    public class UnitOfWork : RepositoryBase, IUnitOfWork
+    public class UnitOfWork :  IUnitOfWork
     {
-
+        private readonly RPGSupportDb _context;
    
-  
-        public UnitOfWork(/*RPGSupportDb database*/)
+        public UnitOfWork(RPGSupportDb context)
         {
-            //if (database == null)
-            //{
-            //    throw new ArgumentNullException("database");
-            //}
+            if (context == null)
+            {
+                throw new ArgumentNullException("database");
+            }
 
-            //_database = database;
+            _context = context;
         }
+
+
         public IRepository<TEntity> Repository<TEntity>() where TEntity : class
         {
-            return new Repository<TEntity>();
+            return new Repository<TEntity>(_context);
         }
-
 
         public void Save()
         {
-            Database.SaveChanges();
+            _context.SaveChanges();
         }
 
         public Task<int> SaveChangesAsync()
         {
-            return Database.SaveChangesAsync();
+            return _context.SaveChangesAsync();
+
         }
 
-        //private bool _isDisposed = false;
-        //public void Dispose()
-        //{
-        //    if (_isDisposed)
-        //    {
-        //        return;
-        //    }
+        private bool _isDisposed = false;
 
-        //    _database.Dispose();
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
 
-        //    _isDisposed = true;
+            _context.Dispose();
 
-        //    GC.SuppressFinalize(this);
-        //}
+            _isDisposed = true;
 
-
+            GC.SuppressFinalize(this);
+        }
     }
 }

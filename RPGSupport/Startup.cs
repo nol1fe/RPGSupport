@@ -25,19 +25,21 @@ namespace RPGSupport
         {
             var builder = new ContainerBuilder();
 
-            //Register Identity
+            //REGISTER DBCONTEXT
             builder.RegisterType<RPGSupportDb>().AsSelf().InstancePerRequest();
+
+            //REGISTER IDENTITY
+
             builder.RegisterType<ApplicationUserStore>().As<IUserStore<User, int>>().InstancePerRequest();
             builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => app.GetDataProtectionProvider()).InstancePerRequest();
 
-            //
-            builder.RegisterType<RepositoryBase>().As<IRepositoryBase>().InstancePerRequest();
+            //REPOSITORIES
             builder.RegisterType<Repository<User>>().As<IRepository<User>>().InstancePerRequest();
 
-            //
+            //UNIT OF WORK
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
 
             // REGISTER CONTROLLERS SO DEPENDENCIES ARE CONSTRUCTOR INJECTED

@@ -10,26 +10,16 @@ using System.Security.Claims;
 using DataAccess;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Interfaces.UnitOfWork;
 
 namespace Services
 {
-    //public class ApplicationUserStore : UserStore<User>
-    //{
-    //    private RPGSupportDb context;
-
-    //    public ApplicationUserStore()
-    //    {
-    //      context = new RPGSupportDb();
-
-    //    }
-    //}
-
     public class ApplicationUserStore : IUserStore<User, int>, IUserClaimStore<User, int>, IUserLoginStore<User, int>, IUserRoleStore<User, int>, IUserPasswordStore<User, int>, IUserTwoFactorStore<User, int>, IUserEmailStore<User, int>, IUserLockoutStore<User, int>, IUserSecurityStampStore<User, int>
     {
-        private RPGSupportDb context;
-        public ApplicationUserStore()
+        private IUnitOfWork unitOfWork;
+        public ApplicationUserStore(IUnitOfWork unitOfWork)
         {
-            context = new RPGSupportDb();
+            this.unitOfWork = unitOfWork;
         }
 
         public Task AddClaimAsync(User user, Claim claim)
@@ -49,14 +39,14 @@ namespace Services
 
         public Task CreateAsync(User user)
         {
-            context.Users.Add(user);
-            return context.SaveChangesAsync();
+            unitOfWork.Repository<User>().Insert(user);
+            return unitOfWork.SaveChangesAsync();
         }
 
         public Task DeleteAsync(User user)
         {
-            context.Users.Remove(user);
-            return context.SaveChangesAsync();
+            unitOfWork.Repository<User>().Delete(user);
+            return unitOfWork.SaveChangesAsync();
         }
 
         public Task<User> FindAsync(UserLoginInfo login)
@@ -64,20 +54,20 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<User> FindByEmailAsync(string email)
+        public async Task<User> FindByEmailAsync(string email)
         {
-            return context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return (await this.unitOfWork.Repository<User>().FindByAsync(u => u.Email.ToLower() == email.ToLower())).FirstOrDefault();
         }
 
-        public Task<User> FindByIdAsync(int userId)
+        public async Task<User> FindByIdAsync(int userId)
         {
-            return context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            return (await this.unitOfWork.Repository<User>().FindByAsync(u => u.Id == userId)).FirstOrDefault();
+
         }
 
-        public Task<User> FindByNameAsync(string userName)
+        public async Task<User> FindByNameAsync(string userName)
         {
-            return context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
-
+            return (await this.unitOfWork.Repository<User>().FindByAsync(u => u.UserName.ToLower() == userName.ToLower())).FirstOrDefault();
         }
 
         public Task<int> GetAccessFailedCountAsync(User user)
