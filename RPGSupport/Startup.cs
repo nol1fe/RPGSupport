@@ -1,10 +1,12 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
 using DataAccess;
 using DataAccess.Repositories;
 using DataAccess.UnitOfWork;
 using Entities;
 using Interfaces.Repositories;
+using Interfaces.Services;
 using Interfaces.UnitOfWork;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
@@ -12,7 +14,10 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using Owin;
 using Services;
+using Services.Entity;
+using System.Reflection;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 
@@ -42,14 +47,21 @@ namespace RPGSupport
             //UNIT OF WORK
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
 
+            //SERVICES
+            builder.RegisterType<EntityService<User>>().As<IEntityService<User>>().InstancePerRequest();
+
             // REGISTER CONTROLLERS SO DEPENDENCIES ARE CONSTRUCTOR INJECTED
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
+
+            // Register Web API controllers
+            builder.RegisterApiControllers(typeof(MvcApplication).Assembly);
 
             // BUILD THE CONTAINER
             var container = builder.Build();
 
             // REPLACE THE MVC DEPENDENCY RESOLVER WITH AUTOFAC
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 
             ////// REGISTER WITH OWIN
             app.UseAutofacMiddleware(container);

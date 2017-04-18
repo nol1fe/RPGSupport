@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="RPGSupportApp">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,9 +26,11 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
+                
             </div>
         </div>
     </div>
+  
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -39,6 +41,19 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/RPGSupport")*@
+    <script src="~/Scripts/libs/angular.js"></script>
+
+    <script src="~/Scripts/libs/angular-route.js"></script>
+    @*<script src="~/Scripts/libs/angular-route.min.js"></script>*@
+
+    <script src="~/Scripts/app.js"></script>
+
+    <script src="~/Scripts/Controllers/UsersController.js"></script>
+
+
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

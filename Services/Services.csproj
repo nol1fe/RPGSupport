@@ -132,6 +132,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\EntityService.cs" />
     <Compile Include="Users\ApplicationSignInManager.cs" />
     <Compile Include="Users\ApplicationUserManager.cs" />
     <Compile Include="Users\ApplicationUserStore.cs" />
