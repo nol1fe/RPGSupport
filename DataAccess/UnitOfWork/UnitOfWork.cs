@@ -13,7 +13,10 @@ namespace DataAccess.UnitOfWork
     public class UnitOfWork :  IUnitOfWork
     {
         private readonly RPGSupportDb _context;
-   
+        private DbContextTransaction _transaction;
+        private bool _isDisposed = false;
+
+
         public UnitOfWork(RPGSupportDb context)
         {
             if (context == null)
@@ -30,7 +33,7 @@ namespace DataAccess.UnitOfWork
             return new Repository<TEntity>(_context);
         }
 
-        public void Save()
+        public void SaveChanges()
         {
             _context.SaveChanges();
         }
@@ -41,7 +44,11 @@ namespace DataAccess.UnitOfWork
 
         }
 
-        private bool _isDisposed = false;
+        public void Rollback()
+        {
+            _context.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
+        }
+
 
         public void Dispose()
         {
@@ -56,5 +63,7 @@ namespace DataAccess.UnitOfWork
 
             GC.SuppressFinalize(this);
         }
+
+
     }
 }

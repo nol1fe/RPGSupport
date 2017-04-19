@@ -1,4 +1,4 @@
-﻿//(function () {
+﻿(function () {
 
     var RPGSupportApp = angular.module("RPGSupportApp");
 
@@ -26,4 +26,4 @@
 
     RPGSupportApp.controller("UsersController", UsersController);
 
-//}());
+}());

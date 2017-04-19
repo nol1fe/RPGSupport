@@ -275,9 +275,11 @@
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Scripts\Angular\Controllers\MainController.js" />
+    <Content Include="Scripts\Angular\Views\Main.html" />
     <Content Include="Scripts\libs\angular-route.js" />
     <Content Include="Scripts\libs\angular-route.min.js" />
-    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\Angular\app.js" />
     <Content Include="Scripts\libs\angular-mocks.js" />
     <Content Include="Scripts\libs\angular.js" />
     <Content Include="Scripts\libs\angular.min.js" />
@@ -301,8 +303,8 @@
     <Content Include="Scripts\libs\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\libs\respond.min.js" />
     <Content Include="Scripts\libs\_references.js" />
-    <Content Include="Scripts\Controllers\UsersController.js" />
-    <Content Include="Scripts\Views\Users.html" />
+    <Content Include="Scripts\Angular\Controllers\UsersController.js" />
+    <Content Include="Scripts\Angular\Views\Users.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -353,7 +355,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\Services\" />
+    <Folder Include="Scripts\Angular\Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -9,8 +9,9 @@ namespace Interfaces.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        void Save();
+        void SaveChanges();
         IRepository<TEntity> Repository<TEntity>() where TEntity : class;
         Task<int> SaveChangesAsync();
+        void Rollback();
     }
 }

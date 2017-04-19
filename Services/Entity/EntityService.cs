@@ -14,6 +14,8 @@ namespace Services.Entity
     {
         public IUnitOfWork UnitOfWork { get; private set; }
         protected readonly IRepository<TEntity> _repository;
+        private bool _isDisposed = false;
+
 
         public EntityService(IUnitOfWork unitOfWork)
         {
@@ -29,7 +31,7 @@ namespace Services.Entity
         public void Add(TEntity entity)
         {
             _repository.Insert(entity);
-            UnitOfWork.Save();
+            UnitOfWork.SaveChanges();
 
         }
 
@@ -40,22 +42,31 @@ namespace Services.Entity
             {
                 try {
                     _repository.Delete(entity);
-                    UnitOfWork.Save();
+                    UnitOfWork.SaveChanges();
                 }
                 catch (Exception ex) {
-                    //UnitOfWork.Rollback();
+                    UnitOfWork.Rollback();
                     // + exception handling
                 }
             }
-
-           
         }
 
         public void Delete(int id)
         {
-            var entity = _repository.GetById(id);
-            _repository.Delete(entity);
-            UnitOfWork.Save();
+            using (UnitOfWork)
+            {
+                try
+                {
+                    var entity = _repository.GetById(id);
+                    _repository.Delete(entity);
+                    UnitOfWork.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    UnitOfWork.Rollback();
+                    // + exception handling
+                }
+            }
 
         }
 
@@ -63,6 +74,7 @@ namespace Services.Entity
         {
             _repository.Delete(entity);
             return UnitOfWork.SaveChangesAsync();
+
         }
 
         public List<TEntity> GetAll()
@@ -89,9 +101,20 @@ namespace Services.Entity
 
         public void Update(TEntity entity)
         {
-            _repository.Edit(entity);
-            UnitOfWork.Save();
+            using (UnitOfWork)
+            {
+                try
+                {
+                    _repository.Edit(entity);
+                    UnitOfWork.SaveChanges();
 
+                }
+                catch (Exception ex)
+                {
+                    UnitOfWork.Rollback();
+                    // + exception handling
+                }
+            }
         }
 
         public Task UpdateAsync(TEntity entity)
@@ -114,8 +137,16 @@ namespace Services.Entity
 
         public void Dispose()
         {
-            //zaimplemntowac dispose
-            throw new NotImplementedException();
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            UnitOfWork.Dispose();
+
+            _isDisposed = true;
+
+            GC.SuppressFinalize(this);
         }
 
 

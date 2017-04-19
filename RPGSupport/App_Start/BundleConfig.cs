@@ -32,9 +32,9 @@ namespace RPGSupport
                       "~/Scripts/libs/angular-route.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/RPGSupport")
-                .IncludeDirectory("~/Scripts/Controllers", "*.js")
-                .IncludeDirectory("~/Scripts/Services", "*.js")
-                .Include("~/Scripts/app.js"));
+                .IncludeDirectory("~/Scripts/Angular/Controllers", "*.js")
+                .IncludeDirectory("~/Scripts/Angular/Services", "*.js")
+                .Include("~/Scripts/Angular/app.js"));
         }
     }
 }
