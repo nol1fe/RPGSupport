@@ -243,6 +243,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="ControllersAPI\AccountController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -275,7 +276,10 @@
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Scripts\Angular\Controllers\LoginController.js" />
     <Content Include="Scripts\Angular\Controllers\MainController.js" />
+    <Content Include="Scripts\Angular\Services\AuthService.js" />
+    <Content Include="Scripts\Angular\Views\Login.html" />
     <Content Include="Scripts\Angular\Views\Main.html" />
     <Content Include="Scripts\libs\angular-route.js" />
     <Content Include="Scripts\libs\angular-route.min.js" />
@@ -355,7 +359,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\Angular\Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

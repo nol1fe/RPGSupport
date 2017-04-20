@@ -14,6 +14,10 @@
                 templateUrl: paths.viewsPath + "Users.html",
                 controller: "UsersController"
             })
+            .when("/login", {
+                templateUrl: paths.viewsPath + "Login.html",
+                controller: "LoginController"
+            })
             .otherwise({ retdirectTo: "/" });
 
             //$locationProvider.html5Mode({

@@ -2,6 +2,7 @@
 using Entities;
 using Interfaces.Services;
 using Interfaces.UnitOfWork;
+using RPGSupport.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Web.Http;
 
 namespace RPGSupport
 {
+    [Authorize]
     public class UsersController : ApiController
     {
 
@@ -24,7 +26,7 @@ namespace RPGSupport
         [Route("api/Users")]
         public HttpResponseMessage GetAllUsers()
         {
-            var result  = userEntityService.GetAll();
+            var result = userEntityService.GetAll();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
