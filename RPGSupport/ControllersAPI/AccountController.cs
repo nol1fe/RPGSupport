@@ -48,7 +48,7 @@ namespace RPGSupport.ControllersAPI
                 return _authManager;
             }
         }
-        // POST api//login
+        // POST api/login
         [HttpPost]
         [AllowAnonymous]
         [Route("api/login")]
@@ -73,6 +73,32 @@ namespace RPGSupport.ControllersAPI
                     return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid user");
 
             }
+        }
+        // POST: /api/register
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("api/register")]
+        [System.Web.Mvc.ValidateAntiForgeryToken]
+        public async Task<HttpResponseMessage> Register([FromBody]RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new User { UserName = model.Email, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var response = Request.CreateResponse(HttpStatusCode.Moved);
+                    string returnUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
+                    response.Headers.Location = new Uri(returnUrl);
+                    return response;
+          
+                }
+       
+            }
+
+            return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid user");
+
         }
     }
 

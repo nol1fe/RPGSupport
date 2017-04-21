@@ -2,7 +2,7 @@
 
     var RPGSupportApp = angular.module("RPGSupportApp");
 
-    var LoginController = function ($scope, $http, $rootScope) {
+    var LoginController = function ($scope, $http, $rootScope, $location, $timeout, AuthService) {
 
         $scope.credentials = {
             Email: '',
@@ -33,13 +33,22 @@
                 $scope.onSuccess = true;
                 $scope.onError = false;
                 $scope.isLoading = false;
-               
+                AuthService.SetCredentials($scope.credentials.Email, $scope.credentials.Password, $scope.credentials.RememberMe);
+                console.log($scope.credentials.RememberMe);
+                //$rootScope.isAuthenticated = true;
+                console.log($rootScope.globals.currentUser);
+
+                $timeout(function () {
+                    $location.path("/");
+                }, 700);
 
             }, function error(response) {
                 $scope.onError = true;
                 $scope.isLoading = false;
             });
         };
+
+         
 
     };
 

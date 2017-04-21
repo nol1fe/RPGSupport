@@ -1,6 +1,6 @@
 ﻿(function () {
     //APP
-    var RPGSupportApp = angular.module("RPGSupportApp", ["ngRoute"]);
+    var RPGSupportApp = angular.module("RPGSupportApp", ["ngRoute", "ngCookies"]);
 
     RPGSupportApp.config(
         ['$routeProvider', '$locationProvider',
@@ -14,9 +14,17 @@
                 templateUrl: paths.viewsPath + "Users.html",
                 controller: "UsersController"
             })
+            .when("/register", {
+                templateUrl: paths.viewsPath + "Register.html",
+                controller: "RegisterController"
+            })
             .when("/login", {
                 templateUrl: paths.viewsPath + "Login.html",
                 controller: "LoginController"
+            })
+            .when("/logout", {
+                templateUrl: paths.viewsPath + "Main.html",
+                controller: "LogoutController"
             })
             .otherwise({ retdirectTo: "/" });
 
@@ -24,6 +32,17 @@
             //    enabled: true,
             //    //requireBase: false
             //});
+
+       
+            //RPGSupportApp.config(
+            //['$routeProvider',
+            //function ($routeProvider) {
+            //    $routeProvider
+            //    //.when('/dashboard', {
+            //    //    templateUrl: paths.viewsPath + 'Dashboard.html',
+            //    //    controller: 'dashboardController'
+            //    //})
+            //}]);
 
         }]);
 
@@ -34,23 +53,26 @@
         apiPath: '/api/'
     }
 
+    RPGSupportApp.run(
+        ['$rootScope', '$location', '$cookies', '$http',
+        function ($rootScope, $location, $cookies, $http) {
+            // keep user logged in after page refresh
+            $rootScope.globals = $cookies.getObject('globals') || {};
+            if ($rootScope.globals.currentUser) {
+                $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
+            }
 
-    //RPGSupportApp.controller("UsersController", UsersController)
+            //$rootScope.$on('$locationChangeStart', function (event, next, current) {
+            //    // redirect to login page if not logged in and trying to access a restricted page
+            //    var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+            //    var loggedIn = $rootScope.globals.currentUser;
+            //    if (restrictedPage && !loggedIn) {
+            //        $location.path('/login');
+            //    }
+            //});
+        }]);
 
-    //RPGSupportApp.value("projectConfig", {
-    //    viewsPath: paths.viewsPath,
-    //    apiPath: paths.apiPath
-    //});
 
-    //RPGSupportApp.config(
-    //['$routeProvider',
-    //function ($routeProvider) {
-    //    $routeProvider
-    //    //.when('/dashboard', {
-    //    //    templateUrl: paths.viewsPath + 'Dashboard.html',
-    //    //    controller: 'dashboardController'
-    //    //})
-    //}]);
 
 
 }());

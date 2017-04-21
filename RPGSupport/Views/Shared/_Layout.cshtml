@@ -23,11 +23,26 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                    <li><a href="#!/users">Users</a></li>
                 </ul>
-                @Html.Partial("_LoginPartial")
-                
+                <ul class="nav navbar-nav navbar-right" ng-show="globals.currentUser.isAuthenticated">
+                    <li>
+                      <a href="">{{globals.currentUser.username}}</a>
+                    </li>
+                    <li>
+                    <a href="#!/logout">Logout</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" ng-hide="globals.currentUser.isAuthenticated">
+                    <li>
+                        <a href="#!/register">Register</a>
+                    </li>
+                    <li>
+                        <a href="#!/login">Login</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -45,6 +60,9 @@
 
     <script src="~/Scripts/libs/angular.js"></script>
     <script src="~/Scripts/libs/angular-route.js"></script>
+    <script src="~/Scripts/libs/angular-cookies.js"></script>
+  @*  <script src="~/Scripts/libs/angular-messages.js"></script>*@
+
 
     @*APP*@
     <script src="~/Scripts/Angular/app.js"></script>
@@ -52,10 +70,16 @@
     @*CONTROLLERS*@
     <script src="~/Scripts/Angular/Controllers/MainController.js"></script>
     <script src="~/Scripts/Angular/Controllers/UsersController.js"></script>
+    <script src="~/Scripts/Angular/Controllers/RegisterController.js"></script>
     <script src="~/Scripts/Angular/Controllers/LoginController.js"></script>
+    <script src="~/Scripts/Angular/Controllers/LogoutController.js"></script>
 
     @*SERVICES*@
     <script src="~/Scripts/Angular/Services/AuthService.js"></script>
+
+    @*DIRECTIVES*@
+    <script src="~/Scripts/Angular/Directives/equalsDirective.js"></script>
+
 
 
     @RenderSection("scripts", required: false)

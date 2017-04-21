@@ -276,6 +276,14 @@
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Scripts\Angular\Directives\equalsDirective.js" />
+    <Content Include="Scripts\libs\angular-messages.js" />
+    <Content Include="Scripts\libs\angular-messages.min.js" />
+    <Content Include="Scripts\Angular\Controllers\LogoutController.js" />
+    <Content Include="Scripts\Angular\Controllers\RegisterController.js" />
+    <Content Include="Scripts\Angular\Views\Register.html" />
+    <Content Include="Scripts\libs\angular-cookies.js" />
+    <Content Include="Scripts\libs\angular-cookies.min.js" />
     <Content Include="Scripts\Angular\Controllers\LoginController.js" />
     <Content Include="Scripts\Angular\Controllers\MainController.js" />
     <Content Include="Scripts\Angular\Services\AuthService.js" />
@@ -289,6 +297,8 @@
     <Content Include="Scripts\libs\angular.min.js" />
     <Content Include="Scripts\libs\angular.min.js.map" />
     <Content Include="Scripts\libs\angular-route.min.js.map" />
+    <Content Include="Scripts\libs\angular-cookies.min.js.map" />
+    <Content Include="Scripts\libs\angular-messages.min.js.map" />
     <None Include="Scripts\libs\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\libs\bootstrap.js" />
     <Content Include="Scripts\libs\bootstrap.min.js" />
