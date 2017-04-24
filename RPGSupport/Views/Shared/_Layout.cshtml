@@ -8,6 +8,9 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*<base href="http://localhost:54824/">*@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-notification/0.3.6/angular-ui-notification.min.css">
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -24,18 +27,18 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                     <li><a href="#!/users">Users</a></li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right" ng-show="globals.currentUser.isAuthenticated">
+                <ul class="nav navbar-nav navbar-right" ng-show="user.isAuthenticated">
                     <li>
-                      <a href="">{{globals.currentUser.username}}</a>
+                        <a href="">{{user.username}}</a>
                     </li>
                     <li>
-                    <a href="#!/logout">Logout</a>
+                        <a href="#!/logout">Logout</a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right" ng-hide="globals.currentUser.isAuthenticated">
+                <ul class="nav navbar-nav navbar-right" ng-hide="user.isAuthenticated">
                     <li>
                         <a href="#!/register">Register</a>
                     </li>
@@ -46,8 +49,12 @@
             </div>
         </div>
     </div>
-  
+
     <div class="container body-content">
+        <div class="container">
+            <h3 ng-show="title" ng-bind-html="title"></h3>
+            <div class="message" ng-bind-html="message"></div>
+        </div>
         @RenderBody()
         <hr />
         <footer>
@@ -58,14 +65,21 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
 
-    <script src="~/Scripts/libs/angular.js"></script>
-    <script src="~/Scripts/libs/angular-route.js"></script>
-    <script src="~/Scripts/libs/angular-cookies.js"></script>
-  @*  <script src="~/Scripts/libs/angular-messages.js"></script>*@
+
+    <script src="~/Scripts/libs/angular.min.js"></script>
+    <script src="~/Scripts/libs/angular-route.min.js"></script>
+    <script src="~/Scripts/libs/angular-cookies.min.js"></script>
+    <script src="~/Scripts/libs/angular-messages.js"></script>
+    <script src="~/Scripts/libs/angular-local-storage.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-notification/0.3.6/angular-ui-notification.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
 
 
+    @*MODULES*@
+   
     @*APP*@
     <script src="~/Scripts/Angular/app.js"></script>
+
 
     @*CONTROLLERS*@
     <script src="~/Scripts/Angular/Controllers/MainController.js"></script>

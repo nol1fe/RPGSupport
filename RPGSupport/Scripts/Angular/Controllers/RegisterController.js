@@ -29,13 +29,11 @@
                 data: $scope.user
 
             }).then(function success(response) {
-
                 $scope.onSuccess = true;
                 $scope.onError = false;
                 $scope.isLoading = false;
                 AuthService.SetCredentials($scope.user.Email, $scope.user.Password, $scope.RememberMe);
-                console.log($scope.RememberMe);
-                console.log($rootScope.globals.currentUser);
+
             $timeout(function () {
                 $location.path("/");
             }, 700);

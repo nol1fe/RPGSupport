@@ -19,7 +19,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-
+using System;
 
 [assembly: OwinStartupAttribute(typeof(RPGSupport.Startup))]
 namespace RPGSupport
@@ -27,6 +27,15 @@ namespace RPGSupport
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
+        {
+            ConfigureAuth(app);
+            ConfigureAutoFac(app);
+        }
+
+    }
+    public partial class Startup
+    {
+        public void ConfigureAutoFac(IAppBuilder app)
         {
             var builder = new ContainerBuilder();
 
@@ -66,8 +75,6 @@ namespace RPGSupport
             ////// REGISTER WITH OWIN
             app.UseAutofacMiddleware(container);
             app.UseAutofacMvc();
-
-            ConfigureAuth(app);
         }
     }
 }
