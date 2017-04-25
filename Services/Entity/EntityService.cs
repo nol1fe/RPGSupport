@@ -13,26 +13,29 @@ namespace Services.Entity
     public class EntityService<TEntity> : IEntityService<TEntity> where TEntity : class
     {
         public IUnitOfWork UnitOfWork { get; private set; }
-        protected readonly IRepository<TEntity> _repository;
+        //protected readonly IRepository<TEntity> _repository;
         private bool _isDisposed = false;
 
 
         public EntityService(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
-            _repository = UnitOfWork.Repository<TEntity>();
+            //_repository = UnitOfWork.Repository<TEntity>();
         }
 
         public Task AddAsync(TEntity entity)
         {
-            _repository.Insert(entity);
+            UnitOfWork.Repository<TEntity>().Insert(entity);
+            //_repository.Insert(entity);
             return UnitOfWork.SaveChangesAsync();
         }
         public void Add(TEntity entity)
         {
-            _repository.Insert(entity);
-            UnitOfWork.SaveChanges();
+            UnitOfWork.Repository<TEntity>().Insert(entity);
 
+            //_repository.Insert(entity);
+            UnitOfWork.SaveChanges();
+        
         }
 
         public void Delete(TEntity entity)
@@ -41,7 +44,9 @@ namespace Services.Entity
             using (UnitOfWork)
             {
                 try {
-                    _repository.Delete(entity);
+                    UnitOfWork.Repository<TEntity>().Delete(entity);
+
+                    //_repository.Delete(entity);
                     UnitOfWork.SaveChanges();
                 }
                 catch (Exception ex) {
@@ -57,8 +62,10 @@ namespace Services.Entity
             {
                 try
                 {
-                    var entity = _repository.GetById(id);
-                    _repository.Delete(entity);
+                    //var entity = _repository.GetById(id);
+                    var entity = UnitOfWork.Repository<TEntity>().GetById(id);
+                    UnitOfWork.Repository<TEntity>().Delete(entity);
+                    //_repository.Delete(entity);
                     UnitOfWork.SaveChanges();
                 }
                 catch (Exception ex)
@@ -72,31 +79,37 @@ namespace Services.Entity
 
         public Task DeleteAsync(TEntity entity)
         {
-            _repository.Delete(entity);
+            UnitOfWork.Repository<TEntity>().Delete(entity);
+            //_repository.Delete(entity);
             return UnitOfWork.SaveChangesAsync();
 
         }
 
         public List<TEntity> GetAll()
         {
-            return _repository.ToList();
+            
+            return UnitOfWork.Repository<TEntity>().ToList();
+            //return _repository.ToList();
         }
 
         public List<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return _repository.ToList(includeProperties);
-
+            //return _repository.ToList(includeProperties);
+            return UnitOfWork.Repository<TEntity>().ToList(includeProperties);
         }
 
         public Task<List<TEntity>> GetAllAsync()
         {
-            return _repository.ToListAsync();
+            //return _repository.ToListAsync();
+            return UnitOfWork.Repository<TEntity>().ToListAsync();
 
         }
 
         public TEntity GetById(int id)
         {
-            return _repository.GetById(id);
+            return UnitOfWork.Repository<TEntity>().GetById(id);
+
+            //return _repository.GetById(id);
         }
 
         public void Update(TEntity entity)
@@ -105,7 +118,9 @@ namespace Services.Entity
             {
                 try
                 {
-                    _repository.Edit(entity);
+                    UnitOfWork.Repository<TEntity>().Edit(entity);
+
+                    //_repository.Edit(entity);
                     UnitOfWork.SaveChanges();
 
                 }
@@ -119,19 +134,24 @@ namespace Services.Entity
 
         public Task UpdateAsync(TEntity entity)
         {
-            _repository.Edit(entity);
+            UnitOfWork.Repository<TEntity>().Edit(entity);
+
+            //_repository.Edit(entity);
             return UnitOfWork.SaveChangesAsync();
 
         }
 
         public TEntity GetSingle(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return _repository.GetSingle(predicate, includeProperties);
+            return UnitOfWork.Repository<TEntity>().GetSingle(predicate, includeProperties);
+            
+            //return _repository.GetSingle(predicate, includeProperties);
 
         }
         public Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return _repository.GetSingleAsync(predicate, includeProperties);
+            //return _repository.GetSingleAsync(predicate, includeProperties);
+            return UnitOfWork.Repository<TEntity>().GetSingleAsync(predicate, includeProperties);
 
         }
 

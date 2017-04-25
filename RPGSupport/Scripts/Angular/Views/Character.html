@@ -1,0 +1,39 @@
+﻿<h3 ng-show="user.isAuthenticated">Character list</h3>
+<hr />
+
+<h2 ng-hide="user.isAuthenticated">You have to <a href="#!/login">Log in</a> to see your character list!</h2>
+
+<div class="container" ng-show="user.isAuthenticated" name="container">
+    <div ng-repeat="character in characters track by character.Id">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{character.Name}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive"> </div>
+                            <div class="col-md-9 col-lg-9" editable-text="character.Name" onaftersave="updateCharacter(character)">
+                                <label for="Name" class="col-sm-3 control-label">Name</label>
+                                <a class="text-info">{{character.Name || 'empty'}}</a>
+                            </div>
+                            <div class="col-md-9 col-lg-9" onaftersave="updateCharacter()">
+                                <label for="Name" class="col-sm-3 control-label">Gender</label>
+                                {{character.Gender}}
+                            </div>
+                        </div>
+                        <a class="btn btn-primary pull-right">Edit</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href back-button class="btn btn-primary pull-left">Back</a>
+    <a href="#!/character/create" class="btn btn-primary pull-right">Create new</a>
+</div>
+
+
+
+

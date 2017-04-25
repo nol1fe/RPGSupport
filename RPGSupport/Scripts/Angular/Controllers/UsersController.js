@@ -19,9 +19,12 @@
         }
 
         $http.get("/api/Users").then(onUserComplete, onError);
-
         $scope.message = "oki działa";
        
+
+       
+
+
     };
 
     RPGSupportApp.controller("UsersController", UsersController);

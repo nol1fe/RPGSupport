@@ -31,7 +31,7 @@
                 $scope.onError = false;
                 $scope.isLoading = false;
                 AuthService.SetCredentials($scope.credentials.Email, $scope.credentials.Password, $scope.credentials.RememberMe);
-                Notification.success('Successfully logged in!');
+                Notification.success('You have successfully logged in!');
 
                 $timeout(function () {
                     $location.path("/");

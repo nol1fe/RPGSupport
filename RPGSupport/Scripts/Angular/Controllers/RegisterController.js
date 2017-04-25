@@ -2,7 +2,7 @@
 
     var RPGSupportApp = angular.module("RPGSupportApp");
 
-    var RegisterController = function ($scope, $http, $rootScope, AuthService, $location, $timeout) {
+    var RegisterController = function ($scope, $http, $rootScope, AuthService, $location, $timeout, Notification) {
         AuthService.ClearCredentials();
 
         $scope.user = {
@@ -33,6 +33,7 @@
                 $scope.onError = false;
                 $scope.isLoading = false;
                 AuthService.SetCredentials($scope.user.Email, $scope.user.Password, $scope.RememberMe);
+                Notification.success('User successfully created!');
 
             $timeout(function () {
                 $location.path("/");

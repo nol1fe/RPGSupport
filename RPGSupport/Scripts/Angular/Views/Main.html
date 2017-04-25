@@ -1,6 +1,12 @@
 ﻿<h3>Hello, {{user.username}}!</h3>
+<hr />
 
+<div>
+    <p ng-show="user.isAuthenticated">auth: {{user.isAuthenticated}} </p>
 
-<p ng-show="user.isAuthenticated">auth: {{user.isAuthenticated}} </p>
+    <!--<a href="users">Users</a>-->
+    <a href="#!/manage">Manage</a>
+    <br />
+    <a href="#!/character">Character</a>
 
-<!--<a href="users">Users</a>-->
+</div>

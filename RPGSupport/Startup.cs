@@ -58,6 +58,7 @@ namespace RPGSupport
 
             //SERVICES
             builder.RegisterType<EntityService<User>>().As<IEntityService<User>>().InstancePerRequest();
+            builder.RegisterType<EntityService<Character>>().As<IEntityService<Character>>().InstancePerRequest();
 
             // REGISTER CONTROLLERS SO DEPENDENCIES ARE CONSTRUCTOR INJECTED
             builder.RegisterControllers(typeof(MvcApplication).Assembly);

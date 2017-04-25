@@ -1,6 +1,6 @@
 ﻿(function () {
     //APP
-    var RPGSupportApp = angular.module("RPGSupportApp", ["ngRoute", "ngCookies", 'angular-storage', 'ui-notification']);
+    var RPGSupportApp = angular.module("RPGSupportApp", ["ngRoute", "ngCookies", 'angular-storage', 'ui-notification', 'xeditable']);
 
     RPGSupportApp.config(
         ['$routeProvider', '$locationProvider', 'NotificationProvider',
@@ -26,15 +26,30 @@
             templateUrl: paths.viewsPath + "Main.html",
             controller: "LogoutController"
         })
+        .when("/manage", {
+                templateUrl: paths.viewsPath + "Manage.html",
+                controller: "ManageController"
+        })
+        .when("/character", {
+            templateUrl: paths.viewsPath + "Character.html",
+            controller: "CharacterListController"
+
+        })
+        .when("/character/create",{
+            templateUrl: paths.viewsPath + "CharacterCreate.html",
+            controller: "CharacterController"
+        })
+
         .otherwise({ retdirectTo: "/" });
 
         //$locationProvider.html5Mode({
         //    enabled: true,
+
         //    //requireBase: false
         //});
-        
+
         NotificationProvider.setOptions({
-            delay: 10000,
+            delay: 7000,
             startTop: 60,
             startRight: 10,
             verticalSpacing: 20,
@@ -63,11 +78,11 @@
     }
 
     RPGSupportApp.run(
-        ['$rootScope', '$location', '$cookies', '$http', 'store', 'AuthService',  
-    function ($rootScope, $location, $cookies, $http, store, AuthService) {
+        ['$rootScope', '$location', '$cookies', '$http', 'store', 'AuthService', 'editableOptions',
+    function ($rootScope, $location, $cookies, $http, store, AuthService, editableOptions) {
 
         $rootScope.user = AuthService.getDefaultUserInfo();
-
+        editableOptions.theme = 'bs3';
     }]);
 
 
