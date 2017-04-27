@@ -1,8 +1,8 @@
 # RPGSupport
-## About the project:
+## About the project
 Simple RPG support system for oldschool role-playing games. 
 
-## Technology stack: 
+## Technology stack
 - C#
 - ASP .NET MVC 4
 - MS SQL
