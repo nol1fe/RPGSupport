@@ -5,13 +5,7 @@
     var CharacterListController = function ($scope, $http, $rootScope, $location, $timeout, Notification, $filter) {
         $scope.characters = [];
         $scope.container;
-        //$scope.characters = {
-        //    character: {
-        //        Name: "",
-        //        Gender: ""
-        //    }
-        //};
-
+ 
         $scope.error = '';
         $scope.message = '';
 
@@ -19,7 +13,7 @@
         $scope.onError = false;
         $scope.isLoading = false;
 
-        var onUserComplete = function (response) {
+        var onCharactersComplete = function (response) {
             $scope.characters = response.data;
             $scope.onSuccess = true;
             $scope.onError = false;
@@ -34,10 +28,37 @@
             $scope.onError = true;
             $scope.isLoading = false;
         }
-        $http.get('api/Character/GetAll').then(onUserComplete, onError);
+
+        //$http.get('api/Character/GetAll').then(onCharactersComplete, onError);
+
+        var getAllCharacters = function () {
+            $scope.isLoading = true;
+            $http({
+                method: 'GET',
+                url: 'api/Character/GetAll',
+                
+            }).then(onCharactersComplete, onError);
+        }
+
+        getAllCharacters();
 
         $scope.updateCharacter = function (character) {
             alert(character.Name);
+
+            $http({
+                method: 'PUT',
+                url: 'api/Character/{character.Id}',
+                data: {
+                    Id : character.Id,
+                    Name : character.Name,
+                    Gender: character.Gender
+                }
+            }).then(function success(response) {
+          
+                $scope.onSuccess = true;
+                notify.success();
+
+            }, onError);
         };
 
     };

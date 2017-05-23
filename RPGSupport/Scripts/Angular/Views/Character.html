@@ -5,32 +5,45 @@
 
 <div class="container" ng-show="user.isAuthenticated" name="container">
     <div ng-repeat="character in characters track by character.Id">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{character.Name}}</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive"> </div>
-                            <div class="col-md-9 col-lg-9" editable-text="character.Name" onaftersave="updateCharacter(character)">
-                                <label for="Name" class="col-sm-3 control-label">Name</label>
-                                <a class="text-info">{{character.Name || 'empty'}}</a>
+        <form editable-form name="editableForm" onaftersave="updateCharacter(character)">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{character.Name}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row" onaftersave="updateCharacter()">
+                                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive"> </div>
+
+                                <div>
+                                    <!-- editable username (text with validation) -->
+                                    <span class="title">Name: </span>
+                                    <span editable-text="character.Name" e-name="name" e-required>{{ character.Name || 'empty' }}</span>
+                                </div>
+
+                                <div>
+                                    <span class="title">Gender: </span>
+                                    <span text="character.Gender" e-name="name" e-required>{{ character.Gender || 'empty' }}</span>
+
+                                </div>
                             </div>
-                            <div class="col-md-9 col-lg-9" onaftersave="updateCharacter()">
-                                <label for="Name" class="col-sm-3 control-label">Gender</label>
-                                {{character.Gender}}
+                            <div class="buttons">
+                                <!-- button to show form -->
+                                <button type="button" class="btn btn-primary pull-right" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">Edit</button>
+                                <div class="text-center" ng-show="editableForm.$visible">
+                                    <br />
+                                    <button type="submit" class="btn btn-success pull-left" ng-disabled="editableForm.$waiting">Save</button>
+                                    <button type="button" class="btn btn-danger pull-right" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">Cancel</button>
+                                </div>
                             </div>
                         </div>
-                        <a class="btn btn-primary pull-right">Edit</a>
-
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-    <a href back-button class="btn btn-primary pull-left">Back</a>
+    <a back-button class="btn btn-primary pull-left">Back</a>
     <a href="#!/character/create" class="btn btn-primary pull-right">Create new</a>
 </div>
 

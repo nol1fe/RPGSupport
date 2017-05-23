@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using static Entities.Enums;
 
 namespace RPGSupport.ControllersAPI
 {
@@ -33,11 +34,42 @@ namespace RPGSupport.ControllersAPI
                 Name = character.Name,
                 Gender = character.Gender,
                 UserId = userId
+
             };
+
+            
+
 
             characterEntityService.Add(newCharacter);
             
             return Request.CreateResponse(HttpStatusCode.OK, newCharacter);
+
+        }
+
+        [HttpPost]
+        [Route("api/Character/GameSystemStatistics")]
+        public HttpResponseMessage GameSystemSelect([FromBody] Character system)
+        {
+            //string systemName = system.GameSystem.ToString();
+            //var selectedGameSystem = Enum.Parse(typeof(GameSystem), systemName);
+
+            var selectedSystem = (GameSystem)Enum.Parse(typeof(GameSystem), system.GameSystem.ToString());
+
+            switch (selectedSystem)
+            {
+                case GameSystem.Warhammer:
+                    var newStatistics = new List<Statistic>() {
+                        new Statistic() { Id=1, Name="WW"},
+                        new Statistic() { Id=2, Name="US"},
+                        new Statistic() { Id=3, Name="Odp"},
+
+                    };
+
+                    return Request.CreateResponse(HttpStatusCode.OK, newStatistics);
+                    break;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.NotFound, "System not found");
 
         }
 
@@ -51,15 +83,18 @@ namespace RPGSupport.ControllersAPI
 
         }
 
-        [Route("api/Character")]
-        public async Task<HttpResponseMessage> Put ([FromBody]Character value)
+        [Route("api/Character/{id}")]
+        public async Task<HttpResponseMessage> Put ([FromBody]Character character)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await characterEntityService.UpdateAsync(value);
-      
+                    var characterFromDb = characterEntityService.GetSingle(x => x.Id == character.Id);
+                    characterFromDb.Name = character.Name;
+                    characterFromDb.Gender = character.Gender;
+ 
+                    await characterEntityService.UpdateAsync(characterFromDb);
                     return Request.CreateResponse(HttpStatusCode.OK, true);
 
                 }

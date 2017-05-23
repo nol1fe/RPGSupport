@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Entities.Enums;
 
 namespace Entities
 {
@@ -19,6 +20,9 @@ namespace Entities
         [ForeignKey("User")]
         public int UserId { get; set; }
         public virtual User User { get; set; }
+        public virtual GameSystem GameSystem { get; set; }
+
+        public virtual ICollection<CharacterStatistic> Statistics { get; set; }
 
         public Character() { }
 

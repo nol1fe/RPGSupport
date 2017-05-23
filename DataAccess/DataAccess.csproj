@@ -118,13 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\RPGSupportDb.cs" />
-    <Compile Include="Migrations\201703301207518_User.cs" />
-    <Compile Include="Migrations\201703301207518_User.Designer.cs">
-      <DependentUpon>201703301207518_User.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704250941511_Character.cs" />
-    <Compile Include="Migrations\201704250941511_Character.Designer.cs">
-      <DependentUpon>201704250941511_Character.cs</DependentUpon>
+    <Compile Include="Migrations\201705231440048_Initial_Migration.cs" />
+    <Compile Include="Migrations\201705231440048_Initial_Migration.Designer.cs">
+      <DependentUpon>201705231440048_Initial_Migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -146,14 +142,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703301207518_User.resx">
-      <DependentUpon>201703301207518_User.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704250941511_Character.resx">
-      <DependentUpon>201704250941511_Character.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705231440048_Initial_Migration.resx">
+      <DependentUpon>201705231440048_Initial_Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
