@@ -8,7 +8,8 @@
         <form editable-form name="editableForm" onaftersave="updateCharacter(character)">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default center-block">
+                        <button type="button" class="btn btn-danger pull-right btn-xs" ng-click="deleteCharacter(character) && !editableForm.$visible" ng-show="editableForm.$visible" ng-disabled="editableForm.$waiting">Delete Character</button>
                         <div class="panel-heading">
                             <h3 class="panel-title">{{character.Name}}</h3>
                         </div>
@@ -16,25 +17,35 @@
                             <div class="row" onaftersave="updateCharacter()">
                                 <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive"> </div>
 
-                                <div>
+                                <div class="col-sm-9">
                                     <!-- editable username (text with validation) -->
                                     <span class="title">Name: </span>
                                     <span editable-text="character.Name" e-name="name" e-required>{{ character.Name || 'empty' }}</span>
                                 </div>
 
-                                <div>
+                                <div class="col-sm-9">
                                     <span class="title">Gender: </span>
-                                    <span text="character.Gender" e-name="name" e-required>{{ character.Gender || 'empty' }}</span>
+                                    <span text="character.Gender" e-name="gender" e-required>{{ character.Gender || 'empty' }}</span>
+                          
+                                </div>
+                                <hr />
+                                <div class="col-sm-9">
+                                    <div class="col-sm-3 text-center" ng-repeat="stat in character.Statistics">
+                                        <span class="title">{{stat.Statistic.Name}} : </span>
+                                        <span editable-text="stat.CurrentValue" e-placeholder="stat.CurrentValue" e-required>{{stat.CurrentValue || 'empty'}}</span>
+                                    </div>
 
                                 </div>
-                            </div>
-                            <div class="buttons">
-                                <!-- button to show form -->
-                                <button type="button" class="btn btn-primary pull-right" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">Edit</button>
-                                <div class="text-center" ng-show="editableForm.$visible">
+
+                                <div class="buttons col-sm-12">
+                                    <!-- button to show form -->
                                     <br />
-                                    <button type="submit" class="btn btn-success pull-left" ng-disabled="editableForm.$waiting">Save</button>
-                                    <button type="button" class="btn btn-danger pull-right" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">Cancel</button>
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">Edit</button>
+                                    <div class="text-center" ng-show="editableForm.$visible">
+                                        <br />
+                                        <button type="submit" class="btn btn-success pull-left" ng-disabled="editableForm.$waiting">Save</button>
+                                        <button type="button" class="btn btn-default pull-right" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

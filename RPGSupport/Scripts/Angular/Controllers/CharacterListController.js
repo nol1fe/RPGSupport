@@ -38,27 +38,62 @@
                 url: 'api/Character/GetAll',
                 
             }).then(onCharactersComplete, onError);
+
+            console.log($scope.characters);
         }
 
         getAllCharacters();
 
         $scope.updateCharacter = function (character) {
-            alert(character.Name);
-
+      
             $http({
                 method: 'PUT',
-                url: 'api/Character/{character.Id}',
+                url: 'api/Character/Update{character.Id}',
                 data: {
                     Id : character.Id,
                     Name : character.Name,
-                    Gender: character.Gender
+                    Gender: character.Gender,
+                    Statistics : character.Statistics
                 }
             }).then(function success(response) {
           
                 $scope.onSuccess = true;
                 notify.success();
+                $timeout(function () {
+                    $location.path("/character");
+                    getAllCharacters();
+                }, 700);
 
             }, onError);
+        };
+
+        $scope.deleteCharacter = function (character) {
+            $scope.isLoading = true;
+            $http({
+                method: 'POST',
+                url: 'api/Character/DeleteCharacter{id}',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    Id : character.Id
+                }
+
+            }).then(function success(response) {
+                $scope.onSuccess = true;
+                $scope.onError = false;
+                $scope.isLoading = false;
+                Notification.info('Character deleted!');
+                $timeout(function () {
+                    $location.path("/character");
+                    getAllCharacters();
+                }, 700);
+
+            }, function error(response) {
+                $scope.onError = true;
+                $scope.isLoading = false;
+            });
+
         };
 
     };

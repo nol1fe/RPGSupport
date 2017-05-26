@@ -24,6 +24,19 @@ namespace Entities
 
         public virtual Character Character { get; set; }
 
+        [Range(1, 100)]
         public int CurrentValue { get; set; }
+
+        public CharacterStatistic()
+        {
+
+        }
+
+        public CharacterStatistic(int characterId, int statisticId)
+        {
+            CharacterId = characterId;
+            StatisticId = statisticId;
+
+        }
     }
 }

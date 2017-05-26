@@ -14,6 +14,9 @@ namespace Entities
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        public string FullName { get; set; }
+
+        [Range(1,100)]
         public int DefaultValue { get; set; }
 
         //min value 

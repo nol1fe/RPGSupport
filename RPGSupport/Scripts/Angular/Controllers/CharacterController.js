@@ -14,18 +14,18 @@
             Name: "",
             Gender: "",
             System: "",
+            Statistics: []
         };
 
         $scope.characterStatistics = [];
-        $scope.stats = [{
-            Key: "",
-            Value: ""
-        }];
 
+        $scope.updateCharacterStatistics = function () {
+            $scope.character.Statistics = $scope.characterStatistics;
+        };
 
         $scope.checkIfSystemSelected = function () {
             $scope.isSystemSelected = true;
-        }
+        };
 
         $scope.loadGameSystem = function () {
             $scope.isLoading = true;
@@ -42,7 +42,7 @@
                 $scope.onError = false;
                 $scope.isLoading = false;
                 $scope.isSystemLoaded = true;
-                Notification.success('GameSystem Loaded');
+                Notification.info('GameSystem Loaded');
 
                 $scope.characterStatistics = response.data;
 
@@ -50,6 +50,8 @@
                     $scope.characterStatistics.push(response.data[i]);
 
                 };
+
+
 
             }, function error(response) {
                 $scope.onError = true;
@@ -59,6 +61,7 @@
         };
 
         $scope.create = function () {
+
             $scope.isLoading = true;
             $http({
                 method: 'POST',
@@ -73,8 +76,12 @@
                 $scope.onError = false;
                 $scope.isLoading = false;
                 Notification.success('Character created!');
-                
+
                 $rootScope.character = $scope.character;
+
+                $timeout(function () {
+                    $location.path("/character");
+                }, 700);
 
             }, function error(response) {
                 $scope.onError = true;
@@ -82,6 +89,11 @@
             });
 
         };
+
+
+
+
+
     };
 
     RPGSupportApp.controller("CharacterController", CharacterController);
