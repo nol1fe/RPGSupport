@@ -4,10 +4,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @*<base href="/">*@
+
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @*<base href="http://localhost:54824/">*@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-notification/0.3.6/angular-ui-notification.min.css">
+    <link rel="stylesheet" href="~/Content/xeditable.min.css" />
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -18,24 +23,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("RPGSupport", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                  @*  <li>@Html.ActionLink("Home", "Index", "Home")</li>*@
+
                     <li><a href="#!/users">Users</a></li>
+
                 </ul>
-                <ul class="nav navbar-nav navbar-right" ng-show="globals.currentUser.isAuthenticated">
+                <ul class="nav navbar-nav navbar-right" ng-show="user.isAuthenticated">
+                    <li><a href="#!/character">Characters</a></li>
+
                     <li>
-                      <a href="">{{globals.currentUser.username}}</a>
+                        <a href="#!/manage">{{user.username}}</a>
                     </li>
                     <li>
-                    <a href="#!/logout">Logout</a>
+                        <a href="#!/logout">Logout</a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right" ng-hide="globals.currentUser.isAuthenticated">
+                <ul class="nav navbar-nav navbar-right" ng-hide="user.isAuthenticated">
                     <li>
                         <a href="#!/register">Register</a>
                     </li>
@@ -46,26 +53,39 @@
             </div>
         </div>
     </div>
-  
+
     <div class="container body-content">
+        <div class="container">
+            <h3 ng-show="title" ng-bind-html="title"></h3>
+            <div class="message" ng-bind-html="message"></div>
+        </div>
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>@DateTime.Now.Year - RPGSupport</p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
 
-    <script src="~/Scripts/libs/angular.js"></script>
-    <script src="~/Scripts/libs/angular-route.js"></script>
-    <script src="~/Scripts/libs/angular-cookies.js"></script>
-  @*  <script src="~/Scripts/libs/angular-messages.js"></script>*@
+
+    <script src="~/Scripts/libs/angular.min.js"></script>
+    <script src="~/Scripts/libs/angular-route.min.js"></script>
+    <script src="~/Scripts/libs/angular-cookies.min.js"></script>
+    <script src="~/Scripts/libs/angular-messages.js"></script>
+    <script src="~/Scripts/libs/angular-local-storage.min.js"></script>
+    <script src="~/Scripts/libs/xeditable.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-notification/0.3.6/angular-ui-notification.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
 
 
+    @*MODULES*@
+   
     @*APP*@
     <script src="~/Scripts/Angular/app.js"></script>
+
 
     @*CONTROLLERS*@
     <script src="~/Scripts/Angular/Controllers/MainController.js"></script>
@@ -73,12 +93,17 @@
     <script src="~/Scripts/Angular/Controllers/RegisterController.js"></script>
     <script src="~/Scripts/Angular/Controllers/LoginController.js"></script>
     <script src="~/Scripts/Angular/Controllers/LogoutController.js"></script>
+    <script src="~/Scripts/Angular/Controllers/ManageController.js"></script>
+
+    <script src="~/Scripts/Angular/Controllers/CharacterListController.js"></script>
+    <script src="~/Scripts/Angular/Controllers/CharacterController.js"></script>
 
     @*SERVICES*@
     <script src="~/Scripts/Angular/Services/AuthService.js"></script>
 
     @*DIRECTIVES*@
     <script src="~/Scripts/Angular/Directives/equalsDirective.js"></script>
+    <script src="~/Scripts/Angular/Directives/backButtonDirective.js"></script>
 
 
 

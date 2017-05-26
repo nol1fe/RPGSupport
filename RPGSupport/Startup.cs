@@ -19,7 +19,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-
+using System;
 
 [assembly: OwinStartupAttribute(typeof(RPGSupport.Startup))]
 namespace RPGSupport
@@ -27,6 +27,15 @@ namespace RPGSupport
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
+        {
+            ConfigureAuth(app);
+            ConfigureAutoFac(app);
+        }
+
+    }
+    public partial class Startup
+    {
+        public void ConfigureAutoFac(IAppBuilder app)
         {
             var builder = new ContainerBuilder();
 
@@ -49,6 +58,10 @@ namespace RPGSupport
 
             //SERVICES
             builder.RegisterType<EntityService<User>>().As<IEntityService<User>>().InstancePerRequest();
+            builder.RegisterType<EntityService<Character>>().As<IEntityService<Character>>().InstancePerRequest();
+            builder.RegisterType<EntityService<Statistic>>().As<IEntityService<Statistic>>().InstancePerRequest();
+            builder.RegisterType<EntityService<CharacterStatistic>>().As<IEntityService<CharacterStatistic>>().InstancePerRequest();
+
 
             // REGISTER CONTROLLERS SO DEPENDENCIES ARE CONSTRUCTOR INJECTED
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
@@ -66,8 +79,6 @@ namespace RPGSupport
             ////// REGISTER WITH OWIN
             app.UseAutofacMiddleware(container);
             app.UseAutofacMvc();
-
-            ConfigureAuth(app);
         }
     }
 }

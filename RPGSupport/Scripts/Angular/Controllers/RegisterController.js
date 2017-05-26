@@ -2,7 +2,7 @@
 
     var RPGSupportApp = angular.module("RPGSupportApp");
 
-    var RegisterController = function ($scope, $http, $rootScope, AuthService, $location, $timeout) {
+    var RegisterController = function ($scope, $http, $rootScope, AuthService, $location, $timeout, Notification) {
         AuthService.ClearCredentials();
 
         $scope.user = {
@@ -29,13 +29,12 @@
                 data: $scope.user
 
             }).then(function success(response) {
-
                 $scope.onSuccess = true;
                 $scope.onError = false;
                 $scope.isLoading = false;
                 AuthService.SetCredentials($scope.user.Email, $scope.user.Password, $scope.RememberMe);
-                console.log($scope.RememberMe);
-                console.log($rootScope.globals.currentUser);
+                Notification.success('User successfully created!');
+
             $timeout(function () {
                 $location.path("/");
             }, 700);

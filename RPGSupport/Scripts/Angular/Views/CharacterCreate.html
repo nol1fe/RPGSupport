@@ -1,0 +1,79 @@
+﻿<h3 ng-show="user.isAuthenticated">Create a new character</h3>
+<hr />
+
+<h2 ng-hide="user.isAuthenticated">You have to <a href="#!/login">Log in</a> to create new character!</h2>
+
+<div class="row">
+    <div class="col-sm-12" ng-show="user.isAuthenticated">
+        <label class="radio-inline">
+            <input type="radio" ng-model="character.System" value="Warhammer" required ng-change="checkIfSystemSelected() || loadGameSystem()" /> Warhammer
+        </label>
+        <label class="radio-inline">
+            <input type="radio" ng-model="character.System" value="DungeonsAndDragons" required ng-change="checkIfSystemSelected()" /> Dungeons & Dragons
+        </label>
+    </div>
+
+
+    <div class="col-sm-12">
+        <br />
+
+        <p>Selected system is {{character.System}}    |    Selected: {{isSystemSelected}}</p>
+
+    </div>
+
+    <form class="form-horizontal col-sm-12" name="createForm" ng-submit="create()" ng-hide="isLoading || onSuccess || !isSystemLoaded" ng-show="user.isAuthenticated && isSystemLoaded">
+        <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Name.$invalid && createForm.Name.$touched}">
+            <label for="Name" class="control-label">Name</label>
+            <div>
+                <input type="text" class="form-control" name="Name" placeholder="Name" ng-model="character.Name" required>
+                <span class="help-block" ng-show="createForm.Name.$error.required && createForm.Name.$touched">Name is required</span>
+            </div>
+        </div>
+        <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Gender.$invalid && createForm.Gender.$touched}">
+            <label for="Gender" class="control-label">Gender</label>
+            <div>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="character.Gender" name="Gender" value="Male" required /> Male
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="character.Gender" name="Gender" value="Female" required /> Female
+                </label>
+                <span class="help-block" ng-show="createForm.Gender.$error.required && createForm.Gender.$touched">Gender is required</span>
+            </div>
+        </div>
+
+        <div class="form-group col col-sm-7 col-xs-7 text-center">
+            <div class="col-sm-2 col-xs-2 form-group" ng-repeat="statistic in characterStatistics">
+                <label for="{{statistic.Name}}" class="control-label">{{statistic.Name}}</label>
+                <input type="text" class="form-control" name="CurrentValue{{statistic.Id}}" ng-model="statistic.CurrentValue" placeholder="{{statistic.DefaultValue}}" min="1" max='100' required>
+  
+            </div>
+        </div>
+
+        <!--<div class="row text-center col-sm-12 col-xs-3">
+            <div class="col-sm-1 form-group" ng-repeat="statistic in characterStatistics" ng-if="($index)%2==0">
+                <label for="{{statistic.Name}}" class="control-label">{{statistic.Name}}</label>
+                <input type="text" class="form-control" name="CurrentValue" ng-model="statistic.CurrentValue" placeholder="{{statistic.DefaultValue}}" required>
+            </div>
+
+        </div>
+        <div class="row text-center col-sm-12 col-xs-3">
+            <div class="col-sm-1 form-group " ng-repeat="statistic in characterStatistics" ng-if="($index+1)%2==0">
+                <label for="{{statistic.Name}}" class="control-label">{{statistic.Name}}</label>
+                <input type="text" class="form-control" name="CurrentValue" ng-model="statistic.CurrentValue" placeholder="{{statistic.DefaultValue}}" required>
+            </div>
+        </div>-->
+
+        <br />
+        <div class="buttons col-sm-12">
+            <button type="submit" class="btn btn-primary pull-right" ng-click="updateCharacterStatistics()">Create character</button>
+        </div>
+    </form>
+</div>
+
+
+<div ng-show="isLoading">Loading...</div>
+<!--<div ng-show="onSuccess" class="alert alert-success" role="alert">Success!</div>-->
+
+
+<br />

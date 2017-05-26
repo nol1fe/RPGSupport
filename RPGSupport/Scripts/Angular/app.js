@@ -1,50 +1,74 @@
 ﻿(function () {
     //APP
-    var RPGSupportApp = angular.module("RPGSupportApp", ["ngRoute", "ngCookies"]);
+    var RPGSupportApp = angular.module("RPGSupportApp", ["ngRoute", "ngCookies", 'angular-storage', 'ui-notification', 'xeditable']);
 
     RPGSupportApp.config(
-        ['$routeProvider', '$locationProvider',
-        function ($routeProvider, $locationProvider) {
-            $routeProvider
-            .when("/", {
-                templateUrl: paths.viewsPath + "Main.html",
-                controller: "MainController"
-            })
-            .when("/users", {
-                templateUrl: paths.viewsPath + "Users.html",
-                controller: "UsersController"
-            })
-            .when("/register", {
-                templateUrl: paths.viewsPath + "Register.html",
-                controller: "RegisterController"
-            })
-            .when("/login", {
-                templateUrl: paths.viewsPath + "Login.html",
-                controller: "LoginController"
-            })
-            .when("/logout", {
-                templateUrl: paths.viewsPath + "Main.html",
-                controller: "LogoutController"
-            })
-            .otherwise({ retdirectTo: "/" });
+        ['$routeProvider', '$locationProvider', 'NotificationProvider',
+    function ($routeProvider, $locationProvider, NotificationProvider) {
+        $routeProvider
+        .when("/", {
+            templateUrl: paths.viewsPath + "Main.html",
+            controller: "MainController"
+        })
+        .when("/users", {
+            templateUrl: paths.viewsPath + "Users.html",
+            controller: "UsersController"
+        })
+        .when("/register", {
+            templateUrl: paths.viewsPath + "Register.html",
+            controller: "RegisterController"
+        })
+        .when("/login", {
+            templateUrl: paths.viewsPath + "Login.html",
+            controller: "LoginController"
+        })
+        .when("/logout", {
+            templateUrl: paths.viewsPath + "Main.html",
+            controller: "LogoutController"
+        })
+        .when("/manage", {
+                templateUrl: paths.viewsPath + "Manage.html",
+                controller: "ManageController"
+        })
+        .when("/character", {
+            templateUrl: paths.viewsPath + "Character.html",
+            controller: "CharacterListController"
 
-            //$locationProvider.html5Mode({
-            //    enabled: true,
-            //    //requireBase: false
-            //});
+        })
+        .when("/character/create",{
+            templateUrl: paths.viewsPath + "CharacterCreate.html",
+            controller: "CharacterController"
+        })
 
-       
-            //RPGSupportApp.config(
-            //['$routeProvider',
-            //function ($routeProvider) {
-            //    $routeProvider
-            //    //.when('/dashboard', {
-            //    //    templateUrl: paths.viewsPath + 'Dashboard.html',
-            //    //    controller: 'dashboardController'
-            //    //})
-            //}]);
+        .otherwise({ retdirectTo: "/" });
 
-        }]);
+        //$locationProvider.html5Mode({
+        //    enabled: true,
+
+        //    //requireBase: false
+        //});
+
+        NotificationProvider.setOptions({
+            delay: 7000,
+            startTop: 60,
+            startRight: 10,
+            verticalSpacing: 20,
+            horizontalSpacing: 20,
+            positionX: 'right',
+            positionY: 'top'
+        });
+
+        //RPGSupportApp.config(
+        //['$routeProvider',
+        //function ($routeProvider) {
+        //    $routeProvider
+        //    //.when('/dashboard', {
+        //    //    templateUrl: paths.viewsPath + 'Dashboard.html',
+        //    //    controller: 'dashboardController'
+        //    //})
+        //}]);
+
+    }]);
 
 
     // PATHS SETUP
@@ -54,23 +78,12 @@
     }
 
     RPGSupportApp.run(
-        ['$rootScope', '$location', '$cookies', '$http',
-        function ($rootScope, $location, $cookies, $http) {
-            // keep user logged in after page refresh
-            $rootScope.globals = $cookies.getObject('globals') || {};
-            if ($rootScope.globals.currentUser) {
-                $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
-            }
+        ['$rootScope', '$location', '$cookies', '$http', 'store', 'AuthService', 'editableOptions',
+    function ($rootScope, $location, $cookies, $http, store, AuthService, editableOptions) {
 
-            //$rootScope.$on('$locationChangeStart', function (event, next, current) {
-            //    // redirect to login page if not logged in and trying to access a restricted page
-            //    var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
-            //    var loggedIn = $rootScope.globals.currentUser;
-            //    if (restrictedPage && !loggedIn) {
-            //        $location.path('/login');
-            //    }
-            //});
-        }]);
+        $rootScope.user = AuthService.getDefaultUserInfo();
+        editableOptions.theme = 'bs3';
+    }]);
 
 
 

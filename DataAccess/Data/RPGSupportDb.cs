@@ -13,6 +13,9 @@ namespace DataAccess
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Character> Characters { get; set; }
+        public DbSet<Statistic> Statistic { get; set; }
+        public DbSet<CharacterStatistic> CharacterStatistic { get; set; }
 
     }
 }
