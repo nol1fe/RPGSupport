@@ -39,7 +39,6 @@ namespace RPGSupport.ControllersAPI
             {
                 Name = character.Name,
                 Gender = character.Gender,
-                UserId = userId,
                 Statistics = new List<CharacterStatistic>()
 
             };
@@ -60,9 +59,9 @@ namespace RPGSupport.ControllersAPI
             return Request.CreateResponse(HttpStatusCode.OK, newCharacter);
 
         }
-        [HttpPost]
-        [Route("api/Character/DeleteCharacter{id}")]
-        public HttpResponseMessage DeleteCharacter([FromBody] Character character)
+        [HttpDelete]
+        [Route("api/Character/{id}")]
+        public HttpResponseMessage delete([FromBody] Character character)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +71,7 @@ namespace RPGSupport.ControllersAPI
                 var characterFromDb = characterEntityService.GetSingle(x => x.Id == charId);
                 if (characterFromDb != null)
                 {
-         
+
                     characterEntityService.Delete(characterFromDb);
 
                     return Request.CreateResponse(HttpStatusCode.OK, true);
@@ -109,7 +108,7 @@ namespace RPGSupport.ControllersAPI
         }
 
         [HttpGet]
-        [Route("api/Character/GetAll")]
+        [Route("api/Character/")]
         public HttpResponseMessage GetAllCharacters()
         {
             var userId = HttpContext.Current.User.Identity.GetUserId<int>();
@@ -121,8 +120,8 @@ namespace RPGSupport.ControllersAPI
 
                 foreach (var stat in characterStatistics)
                 {
-                     var statistic = statisticEntityService.GetSingle(x => x.Id == stat.StatisticId);
-                    stat.Statistic = statistic; 
+                    var statistic = statisticEntityService.GetSingle(x => x.Id == stat.StatisticId);
+                    stat.Statistic = statistic;
                 }
 
                 character.Statistics = characterStatistics;
@@ -134,9 +133,57 @@ namespace RPGSupport.ControllersAPI
 
         }
 
-        [Route("api/Character/Update{id}")]
+        [HttpGet]
+        [Route("api/Character/{id}")]
+        public HttpResponseMessage GetAllCharacters([FromUri]int id)
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId<int>();
+            var character = characterEntityService.GetSingle(x => x.Id == id);
+
+            if (character != null)
+            {
+                var characterStatistics = characterStatisticEntityService.GetAll().Where(x => x.CharacterId == character.Id).ToList();
+
+                if (characterStatistics != null)
+                {
+
+                    foreach (var stat in characterStatistics)
+                    {
+                        var statistic = statisticEntityService.GetSingle(x => x.Id == stat.StatisticId);
+                        stat.Statistic = statistic;
+                    }
+
+                    character.Statistics = characterStatistics;
+                    return Request.CreateResponse(HttpStatusCode.OK, character);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.NotFound, "Character statistics not found");
+
+            }
+
+            return Request.CreateResponse(HttpStatusCode.NotFound, "Character not found");
+
+        }
+
+        [HttpPut]
+        [Route("api/Character/{id}")]
         public async Task<HttpResponseMessage> Put([FromBody]Character character)
         {
+
+            //TODO: Change this system of editing gender :D 
+
+            //switch (character.Gender)
+            //{
+            //    case "1":
+            //        character.Gender = "Male";
+            //        break;
+            //    case "2":
+            //        character.Gender = "Female";
+            //        break;
+
+            //}
+
+
             if (ModelState.IsValid)
             {
                 try
@@ -147,14 +194,14 @@ namespace RPGSupport.ControllersAPI
                     await characterEntityService.UpdateAsync(characterFromDb);
 
                     var characterStatisticsFromDb = characterStatisticEntityService.GetAll().Where(x => x.CharacterId == characterFromDb.Id).ToList();
-                    foreach (var charStat in characterStatisticsFromDb)
+                    foreach (var statFromDb in characterStatisticsFromDb)
                     {
-                        var statFromBody = character.Statistics.FirstOrDefault(x => x.StatisticId == charStat.StatisticId);
-                        charStat.CurrentValue = statFromBody.CurrentValue;
+                        var statFromBody = character.Statistics.FirstOrDefault(x => x.StatisticId == statFromDb.StatisticId);
+                        statFromDb.CurrentValue = statFromBody.CurrentValue;
 
-                        await characterStatisticEntityService.UpdateAsync(charStat);
+                        await characterStatisticEntityService.UpdateAsync(statFromDb);
                     }
-                                       
+
                     return Request.CreateResponse(HttpStatusCode.OK, true);
 
                 }
@@ -166,6 +213,26 @@ namespace RPGSupport.ControllersAPI
 
             return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "ModelState Not Valid");
 
+        }
+
+
+
+
+        [HttpGet]
+        [Route("api/Character/Gender/Lookup")]
+        public HttpResponseMessage GetCharacterGenderLookup()
+        {
+            var result = new List<LookupModel>();
+            foreach (var gender in Enum.GetValues(typeof(Gender)))
+            {
+                result.Add(new LookupModel()
+                {
+                    Key = (int)gender,
+                    Value = gender.ToString()
+                });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, result);
 
         }
     }

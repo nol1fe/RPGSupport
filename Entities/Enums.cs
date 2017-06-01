@@ -13,5 +13,12 @@ namespace Entities
             Warhammer = 0,
             DungeonsAndDragons = 1,
         }
+
+        public enum Gender
+        {
+            Male = 1,
+            Female = 2
+
+        }
     }
 }

@@ -14,8 +14,11 @@
             Name: "",
             Gender: "",
             System: "",
-            Statistics: []
+            Statistics: [],
+            GameSystem: ""
         };
+
+        $scope.genders = [];
 
         $scope.characterStatistics = [];
 
@@ -26,6 +29,18 @@
         $scope.checkIfSystemSelected = function () {
             $scope.isSystemSelected = true;
         };
+
+        $scope.initController = function () {
+            $http({
+                method: 'GET',
+                url: 'api/Character/Gender/Lookup',
+            }).then(function success(response) {
+            
+                $scope.genders = response.data;
+
+            }, function error(response) {
+            });
+        }
 
         $scope.loadGameSystem = function () {
             $scope.isLoading = true;

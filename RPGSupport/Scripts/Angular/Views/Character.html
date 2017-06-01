@@ -3,7 +3,7 @@
 
 <h2 ng-hide="user.isAuthenticated">You have to <a href="#!/login">Log in</a> to see your character list!</h2>
 
-<div class="container" ng-show="user.isAuthenticated" name="container">
+<div class="container" ng-show="user.isAuthenticated" name="container" ng-init="initController()">
     <div ng-repeat="character in characters track by character.Id">
         <form editable-form name="editableForm" onaftersave="updateCharacter(character)">
             <div class="row">
@@ -25,8 +25,8 @@
 
                                 <div class="col-sm-9">
                                     <span class="title">Gender: </span>
-                                    <span text="character.Gender" e-name="gender" e-required>{{ character.Gender || 'empty' }}</span>
-                          
+                                    <span editable-radiolist="character.Gender" e-ng-options="s.Key as s.Value for s in ::genders" e-required>{{showGenderValue(character.Gender)}}</span>
+                                  <!--  <span editable-radiolist="character.Gender" e-ng-options="gender as gender.text for gender in Gender track by gender.value" e-required>{{showGender(character) }}</span>-->
                                 </div>
                                 <hr />
                                 <div class="col-sm-9">

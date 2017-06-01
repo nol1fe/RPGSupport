@@ -3,7 +3,7 @@
 
 <h2 ng-hide="user.isAuthenticated">You have to <a href="#!/login">Log in</a> to create new character!</h2>
 
-<div class="row">
+<div class="row" ng-init="initController()">
     <div class="col-sm-12" ng-show="user.isAuthenticated">
         <label class="radio-inline">
             <input type="radio" ng-model="character.System" value="Warhammer" required ng-change="checkIfSystemSelected() || loadGameSystem()" /> Warhammer
@@ -32,12 +32,12 @@
         <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Gender.$invalid && createForm.Gender.$touched}">
             <label for="Gender" class="control-label">Gender</label>
             <div>
-                <label class="radio-inline">
-                    <input type="radio" ng-model="character.Gender" name="Gender" value="Male" required /> Male
+                <label class="radio-inline" ng-repeat="gender in genders">
+                    <input type="radio" ng-model="character.Gender" name="Gender" value="{{gender.Key}}" required /> {{gender.Value}}
                 </label>
-                <label class="radio-inline">
-                    <input type="radio" ng-model="character.Gender" name="Gender" value="Female" required /> Female
-                </label>
+                <!--<label class="radio-inline">
+                    <input type="radio" ng-model="character.gender" name="gender" value="female" required /> female
+                </label>-->
                 <span class="help-block" ng-show="createForm.Gender.$error.required && createForm.Gender.$touched">Gender is required</span>
             </div>
         </div>

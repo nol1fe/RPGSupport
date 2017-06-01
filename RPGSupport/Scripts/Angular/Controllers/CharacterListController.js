@@ -4,7 +4,13 @@
 
     var CharacterListController = function ($scope, $http, $rootScope, $location, $timeout, Notification, $filter) {
         $scope.characters = [];
+        $scope.genders = [];
         $scope.container;
+
+        //$scope.Gender = [
+        //      { value: 1, text: 'Male' },
+        //      { value: 2, text: 'Female' }
+        //];
  
         $scope.error = '';
         $scope.message = '';
@@ -12,6 +18,37 @@
         $scope.onSuccess = false;
         $scope.onError = false;
         $scope.isLoading = false;
+
+        //$scope.selectedGender = "";
+
+
+        $scope.initController = function () {
+            $http({
+                method: 'GET',
+                url: 'api/Character/Gender/Lookup',
+            }).then(function success(response) {
+
+                $scope.genders = response.data;
+
+            }, function error(response) {
+            });
+        }
+
+        $scope.showGenderValue = function(gender){
+
+            var selectedGender = '';
+
+            $.each($scope.genders, function (index, item) {
+
+                if (item.Key === gender) {
+                    selectedGender = item.Value;
+                }
+            });
+
+            return selectedGender;
+
+        }
+
 
         var onCharactersComplete = function (response) {
             $scope.characters = response.data;
@@ -35,20 +72,29 @@
             $scope.isLoading = true;
             $http({
                 method: 'GET',
-                url: 'api/Character/GetAll',
+                url: 'api/Character/',
                 
             }).then(onCharactersComplete, onError);
 
-            console.log($scope.characters);
         }
 
         getAllCharacters();
+
+        //$scope.showGender = function (character) {
+        //    var selected = $filter('filter')($scope.Gender, { text: character.Gender });
+
+        //    return (character.Gender && selected.length) ? selected[0].text : 'Not set';
+
+        //};
 
         $scope.updateCharacter = function (character) {
       
             $http({
                 method: 'PUT',
-                url: 'api/Character/Update{character.Id}',
+                url: 'api/Character/{character.Id}',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 data: {
                     Id : character.Id,
                     Name : character.Name,
@@ -58,7 +104,7 @@
             }).then(function success(response) {
           
                 $scope.onSuccess = true;
-                notify.success();
+                Notification.success('Character edited!');
                 $timeout(function () {
                     $location.path("/character");
                     getAllCharacters();
@@ -70,8 +116,8 @@
         $scope.deleteCharacter = function (character) {
             $scope.isLoading = true;
             $http({
-                method: 'POST',
-                url: 'api/Character/DeleteCharacter{id}',
+                method: 'DELETE',
+                url: 'api/Character/{character.Id}',
                 headers: {
                     'Content-Type': 'application/json'
                 },
