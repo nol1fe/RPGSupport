@@ -50,7 +50,6 @@ namespace RPGSupport.ControllersAPI
                     CurrentValue = stat.CurrentValue,
 
                 };
-                //characterStatisticEntityService.Add(characterStat);
                 newCharacter.Statistics.Add(characterStat);
             }
 
@@ -135,29 +134,31 @@ namespace RPGSupport.ControllersAPI
 
         [HttpGet]
         [Route("api/Character/{id}")]
-        public HttpResponseMessage GetAllCharacters([FromUri]int id)
+        public HttpResponseMessage GetSingle([FromUri]int id)
         {
             var userId = HttpContext.Current.User.Identity.GetUserId<int>();
-            var character = characterEntityService.GetSingle(x => x.Id == id);
+            var character = characterEntityService.GetSingle(x => x.Id == id,
+                y=>y.Statistics, 
+                y=>y.Statistics.Select(z=>z.Statistic));
 
             if (character != null)
             {
-                var characterStatistics = characterStatisticEntityService.GetAll().Where(x => x.CharacterId == character.Id).ToList();
+                //var characterStatistics = characterStatisticEntityService.GetAll().Where(x => x.CharacterId == character.Id).ToList();
 
-                if (characterStatistics != null)
-                {
+                //if (characterStatistics != null)
+                //{
 
-                    foreach (var stat in characterStatistics)
-                    {
-                        var statistic = statisticEntityService.GetSingle(x => x.Id == stat.StatisticId);
-                        stat.Statistic = statistic;
-                    }
+                //    foreach (var stat in characterStatistics)
+                //    {
+                //        var statistic = statisticEntityService.GetSingle(x => x.Id == stat.StatisticId);
+                //        stat.Statistic = statistic;
+                //    }
 
-                    character.Statistics = characterStatistics;
-                    return Request.CreateResponse(HttpStatusCode.OK, character);
-                }
+                //    character.Statistics = characterStatistics;
+                //}
 
-                return Request.CreateResponse(HttpStatusCode.NotFound, "Character statistics not found");
+                //return Request.CreateResponse(HttpStatusCode.NotFound, "Character statistics not found");
+                return Request.CreateResponse(HttpStatusCode.OK, character);
 
             }
 
@@ -169,20 +170,6 @@ namespace RPGSupport.ControllersAPI
         [Route("api/Character/{id}")]
         public async Task<HttpResponseMessage> Put([FromBody]Character character)
         {
-
-            //TODO: Change this system of editing gender :D 
-
-            //switch (character.Gender)
-            //{
-            //    case "1":
-            //        character.Gender = "Male";
-            //        break;
-            //    case "2":
-            //        character.Gender = "Female";
-            //        break;
-
-            //}
-
 
             if (ModelState.IsValid)
             {

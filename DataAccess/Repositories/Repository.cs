@@ -48,7 +48,7 @@ namespace DataAccess.Repositories
         public TEntity GetSingle(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
         {
             var entities = StartQuery(includeProperties);
-            return _dbset.FirstOrDefault(predicate);
+            return entities.FirstOrDefault(predicate);
         }
 
         public void Insert(TEntity entity)
