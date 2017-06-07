@@ -19,6 +19,8 @@ namespace Entities
         [Range(0,100)]
         public int DefaultValue { get; set; }
 
+        public virtual GameSystem GameSystem { get; set; }
+
         //min value 
         //max value
         //description

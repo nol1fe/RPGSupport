@@ -7,20 +7,12 @@
         $scope.genders = [];
         $scope.container;
 
-        //$scope.Gender = [
-        //      { value: 1, text: 'Male' },
-        //      { value: 2, text: 'Female' }
-        //];
- 
         $scope.error = '';
         $scope.message = '';
 
         $scope.onSuccess = false;
         $scope.onError = false;
         $scope.isLoading = false;
-
-        //$scope.selectedGender = "";
-
 
         $scope.initController = function () {
             $http({

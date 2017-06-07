@@ -4,13 +4,16 @@ using Microsoft.AspNet.Identity;
 using RPGSupport.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using static Entities.Enums;
+
 
 namespace RPGSupport.ControllersAPI
 {
@@ -86,26 +89,6 @@ namespace RPGSupport.ControllersAPI
 
         }
 
-        [HttpPost]
-        [Route("api/Character/GameSystemStatistics")]
-        public HttpResponseMessage GameSystemSelect([FromBody] Character system)
-        {
-
-            var selectedSystem = (GameSystem)Enum.Parse(typeof(GameSystem), system.GameSystem.ToString());
-            var statistics = statisticEntityService.GetAll().ToList();
-
-            switch (selectedSystem)
-            {
-                case GameSystem.Warhammer:
-                    return Request.CreateResponse(HttpStatusCode.OK, statistics);
-                    break;
-
-            }
-
-            return Request.CreateResponse(HttpStatusCode.NotFound, "System not found");
-
-        }
-
         [HttpGet]
         [Route("api/Character/")]
         public HttpResponseMessage GetAllCharacters()
@@ -143,21 +126,7 @@ namespace RPGSupport.ControllersAPI
 
             if (character != null)
             {
-                //var characterStatistics = characterStatisticEntityService.GetAll().Where(x => x.CharacterId == character.Id).ToList();
 
-                //if (characterStatistics != null)
-                //{
-
-                //    foreach (var stat in characterStatistics)
-                //    {
-                //        var statistic = statisticEntityService.GetSingle(x => x.Id == stat.StatisticId);
-                //        stat.Statistic = statistic;
-                //    }
-
-                //    character.Statistics = characterStatistics;
-                //}
-
-                //return Request.CreateResponse(HttpStatusCode.NotFound, "Character statistics not found");
                 return Request.CreateResponse(HttpStatusCode.OK, character);
 
             }
@@ -203,8 +172,6 @@ namespace RPGSupport.ControllersAPI
         }
 
 
-
-
         [HttpGet]
         [Route("api/Character/Gender/Lookup")]
         public HttpResponseMessage GetCharacterGenderLookup()
@@ -222,5 +189,58 @@ namespace RPGSupport.ControllersAPI
             return Request.CreateResponse(HttpStatusCode.OK, result);
 
         }
+
+        [HttpGet]
+        [Route("api/Character/GameSystem/Lookup")]
+        public HttpResponseMessage GetCharacterGameSystemLookup()
+        {
+            
+            var result = new List<LookupModel>();
+
+
+
+            foreach (var gameSystem in Enum.GetValues(typeof(GameSystem)))
+            {
+                var name = gameSystem.GetType().GetMember(gameSystem.ToString())
+                           .First()
+                           .GetCustomAttribute<DisplayAttribute>()
+                           .Name;
+
+                result.Add(new LookupModel()
+                {
+                    Key = (int)gameSystem,
+                    Value = gameSystem.ToString(),
+                    Name = name
+            });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, result);
+
+        }
+
+        [HttpGet]
+        [Route("api/Character/GameSystem/{id}")]
+        public HttpResponseMessage GetGameSystemStatistics([FromUri]int id)
+        {
+
+            var system = (GameSystem)id;
+
+            var statistics = statisticEntityService.GetAll().Where(x=>x.GameSystem == system).ToList();
+            if (statistics != null && statistics.Count > 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, statistics);
+            }
+
+            //switch (selectedSystem)
+            //{
+            //    case GameSystem.Warhammer:
+            //        return Request.CreateResponse(HttpStatusCode.OK, statistics);
+            //        break;
+
+            //}
+            return Request.CreateResponse(HttpStatusCode.NotFound, "System not found");
+
+        }
+
     }
 }

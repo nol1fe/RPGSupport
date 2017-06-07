@@ -1,9 +1,11 @@
+using System;
+using System.Data.Entity.Migrations;
+
 namespace DataAccess.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
+
     
-    public partial class Initial_Migration : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -13,7 +15,7 @@ namespace DataAccess.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
-                        Gender = c.String(),
+                        Gender = c.Int(nullable: false),
                         UserId = c.Int(nullable: false),
                         GameSystem = c.Int(nullable: false),
                     })
@@ -29,6 +31,7 @@ namespace DataAccess.Migrations
                         StatisticId = c.Int(nullable: false),
                         CharacterId = c.Int(nullable: false),
                         CurrentValue = c.Int(nullable: false),
+                        GameSystem = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Characters", t => t.CharacterId, cascadeDelete: true)
@@ -42,7 +45,9 @@ namespace DataAccess.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
+                        FullName = c.String(),
                         DefaultValue = c.Int(nullable: false),
+                        GameSystem = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             

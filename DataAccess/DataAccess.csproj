@@ -118,17 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\RPGSupportDb.cs" />
-    <Compile Include="Migrations\201705231440048_Initial_Migration.cs" />
-    <Compile Include="Migrations\201705231440048_Initial_Migration.Designer.cs">
-      <DependentUpon>201705231440048_Initial_Migration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705251128448_Statistics.cs" />
-    <Compile Include="Migrations\201705251128448_Statistics.Designer.cs">
-      <DependentUpon>201705251128448_Statistics.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706011750561_Character_Gender_Fix.cs" />
-    <Compile Include="Migrations\201706011750561_Character_Gender_Fix.Designer.cs">
-      <DependentUpon>201706011750561_Character_Gender_Fix.cs</DependentUpon>
+    <Compile Include="Migrations\201706071403431_Init.cs" />
+    <Compile Include="Migrations\201706071403431_Init.Designer.cs">
+      <DependentUpon>201706071403431_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -150,14 +142,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705231440048_Initial_Migration.resx">
-      <DependentUpon>201705231440048_Initial_Migration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705251128448_Statistics.resx">
-      <DependentUpon>201705251128448_Statistics.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706011750561_Character_Gender_Fix.resx">
-      <DependentUpon>201706011750561_Character_Gender_Fix.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706071403431_Init.resx">
+      <DependentUpon>201706071403431_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
