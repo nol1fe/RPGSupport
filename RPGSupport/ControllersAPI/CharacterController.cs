@@ -63,12 +63,11 @@ namespace RPGSupport.ControllersAPI
         }
         [HttpDelete]
         [Route("api/Character/{id}")]
-        public HttpResponseMessage delete([FromBody] Character character)
+        public HttpResponseMessage Delete([FromUri]int id)
         {
-            if (ModelState.IsValid)
-            {
-                var userId = HttpContext.Current.User.Identity.GetUserId<int>();
-                int charId = character.Id;
+
+            var userId = HttpContext.Current.User.Identity.GetUserId<int>();
+            int charId = id;
 
                 var characterFromDb = characterEntityService.GetSingle(x => x.Id == charId);
                 if (characterFromDb != null)
@@ -78,12 +77,6 @@ namespace RPGSupport.ControllersAPI
 
                     return Request.CreateResponse(HttpStatusCode.OK, true);
                 }
-
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Character not found");
-                }
-            }
 
             return Request.CreateResponse(HttpStatusCode.NotFound, "Character not found");
 
@@ -231,13 +224,6 @@ namespace RPGSupport.ControllersAPI
                 return Request.CreateResponse(HttpStatusCode.OK, statistics);
             }
 
-            //switch (selectedSystem)
-            //{
-            //    case GameSystem.Warhammer:
-            //        return Request.CreateResponse(HttpStatusCode.OK, statistics);
-            //        break;
-
-            //}
             return Request.CreateResponse(HttpStatusCode.NotFound, "System not found");
 
         }

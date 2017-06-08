@@ -6,6 +6,8 @@
         $scope.characters = [];
         $scope.genders = [];
         $scope.container;
+        $scope.min = 1;
+        $scope.max = 99;
 
         $scope.error = '';
         $scope.message = '';
@@ -17,16 +19,16 @@
         $scope.initController = function () {
             $http({
                 method: 'GET',
-                url: 'api/Character/Gender/Lookup',
+                url: 'api/Character/Gender/Lookup'
             }).then(function success(response) {
 
                 $scope.genders = response.data;
 
             }, function error(response) {
             });
-        }
+        };
 
-        $scope.showGenderValue = function(gender){
+        $scope.showGenderValue = function (gender) {
 
             var selectedGender = '';
 
@@ -39,7 +41,7 @@
 
             return selectedGender;
 
-        }
+        };
 
 
         var onCharactersComplete = function (response) {
@@ -50,13 +52,13 @@
 
             console.log($scope.characters);
 
-        }
+        };
 
         var onError = function (reason) {
             $scope.error = "Characters not found";
             $scope.onError = true;
             $scope.isLoading = false;
-        }
+        };
 
         //$http.get('api/Character/GetAll').then(onCharactersComplete, onError);
 
@@ -64,20 +66,13 @@
             $scope.isLoading = true;
             $http({
                 method: 'GET',
-                url: 'api/Character/',
-                
+                url: 'api/Character/'
+
             }).then(onCharactersComplete, onError);
 
-        }
+        };
 
         getAllCharacters();
-
-        //$scope.showGender = function (character) {
-        //    var selected = $filter('filter')($scope.Gender, { text: character.Gender });
-
-        //    return (character.Gender && selected.length) ? selected[0].text : 'Not set';
-
-        //};
 
         $scope.updateCharacter = function (character) {
       
@@ -105,16 +100,14 @@
             }, onError);
         };
 
-        $scope.deleteCharacter = function (character) {
+        $scope.deleteCharacter = function (characterId) {
+            console.log(characterId);
             $scope.isLoading = true;
             $http({
                 method: 'DELETE',
-                url: 'api/Character/{character.Id}',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                url: 'api/Character/' + characterId,
                 data: {
-                    Id : character.Id
+                    data: { id: characterId }
                 }
 
             }).then(function success(response) {

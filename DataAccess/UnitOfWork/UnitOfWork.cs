@@ -19,12 +19,12 @@ namespace DataAccess.UnitOfWork
 
         public UnitOfWork(RPGSupportDb context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException("database");
-            }
+            //if (context == null)
+            //{
+            //    throw new ArgumentNullException("database");
+            //}
 
-            _context = context;
+            _context = context ?? throw new ArgumentNullException("database");
         }
 
 

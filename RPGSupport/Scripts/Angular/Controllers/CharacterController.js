@@ -9,6 +9,9 @@
         $scope.isLoading = false;
         $scope.isSystemSelected = false;
         $scope.isSystemLoaded = false;
+        $scope.min = 1;
+        $scope.max = 99;
+
 
         $scope.character = {
             Name: "",
@@ -19,7 +22,6 @@
 
         $scope.genders = [];
         $scope.gamesystems = [];
-
         $scope.characterStatistics = [];
 
         $scope.updateCharacterStatistics = function () {
@@ -54,7 +56,6 @@
 
         $scope.loadGameSystem = function (systemId) {
             $scope.isLoading = true;
-            console.log("id : " + systemId);
             $http({
                 method: 'GET',
                 url: 'api/Character/GameSystem/' + $scope.character.System,

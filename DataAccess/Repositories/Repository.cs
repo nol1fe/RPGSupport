@@ -26,6 +26,7 @@ namespace DataAccess.Repositories
         }
         public void Delete(TEntity entity)
         {
+            _dbset.Attach(entity);
             _dbset.Remove(entity);
         }
 

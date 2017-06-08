@@ -7,7 +7,7 @@
     <div class="col-sm-12" ng-show="user.isAuthenticated">
 
         <label class="radio-inline" ng-repeat="system in gamesystems">
-            <input type="radio" ng-model="character.System" name="System" value="{{system.Key}}" required  ng-change="checkIfSystemSelected() || loadGameSystem(character.System)"/> {{system.Name}}
+            <input type="radio" ng-model="character.System" name="System" value="{{system.Key}}" required ng-change="checkIfSystemSelected() || loadGameSystem(character.System)" /> {{system.Name}}
         </label>
 
     </div>
@@ -21,8 +21,13 @@
         <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Name.$invalid && createForm.Name.$touched}">
             <label for="Name" class="control-label">Name</label>
             <div>
-                <input type="text" class="form-control" name="Name" placeholder="Name" ng-model="character.Name" required>
+                <input pattern="[A-zA-Z]+" minlength="2" maxlength="24" type="text" class="form-control" name="Name" placeholder="Name" ng-model="character.Name" required>
                 <span class="help-block" ng-show="createForm.Name.$error.required && createForm.Name.$touched">Name is required</span>
+                <span class="help-block" ng-show="createForm.Name.$error.minlength && createForm.Name.$touched">Name must be minimum 2 characters long!</span>
+                <span class="help-block" ng-show="createForm.Name.$error.maxlength && createForm.Name.$touched">Name can only be up to 24 characters long!</span>
+                <span class="help-block" ng-show="createForm.Name.$error.pattern && createForm.Name.$touched">Name can only contain letters!</span>
+
+
             </div>
         </div>
         <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Gender.$invalid && createForm.Gender.$touched}">
@@ -39,10 +44,16 @@
         <div class="form-group col col-sm-7 col-xs-7 text-center">
             <div class="col-sm-2 col-xs-2 form-group" ng-repeat="statistic in characterStatistics">
                 <label for="{{statistic.Name}}" class="control-label">{{statistic.Name}}</label>
-                <input type="text" class="form-control" name="CurrentValue{{statistic.Id}}" ng-model="statistic.CurrentValue" placeholder="{{statistic.DefaultValue}}" min="1" max='100' required>
-  
+                <input type="number" class="form-control" name="CurrentValue{{statistic.Id}}"
+                       ng-model="statistic.CurrentValue" placeholder="{{statistic.DefaultValue}}"
+                       required />
+                <input type="range" class="form-control"
+                       ng-model="statistic.CurrentValue"
+                       min="{{min}}" max="{{max}}"
+                       required />
             </div>
         </div>
+
 
         <br />
         <div class="buttons col-sm-12">
