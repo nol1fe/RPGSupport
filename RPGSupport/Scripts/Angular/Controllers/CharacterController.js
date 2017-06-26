@@ -9,14 +9,19 @@
         $scope.isLoading = false;
         $scope.isSystemSelected = false;
         $scope.isSystemLoaded = false;
+        $scope.min = 1;
+        $scope.max = 99;
+
 
         $scope.character = {
             Name: "",
             Gender: "",
             System: "",
-            Statistics: []
+            Statistics: [],
         };
 
+        $scope.genders = [];
+        $scope.gamesystems = [];
         $scope.characterStatistics = [];
 
         $scope.updateCharacterStatistics = function () {
@@ -27,15 +32,34 @@
             $scope.isSystemSelected = true;
         };
 
-        $scope.loadGameSystem = function () {
+        $scope.initController = function () {
+            $http({
+                method: 'GET',
+                url: 'api/Character/Gender/Lookup',
+            }).then(function success(response) {
+            
+                $scope.genders = response.data;
+
+            }, function error(response) {
+            });
+            $http({
+                method: 'GET',
+                url: 'api/Character/GameSystem/Lookup',
+            }).then(function success(response) {
+
+                $scope.gamesystems = response.data;
+
+            }, function error(response) {
+            });
+
+        }
+
+        $scope.loadGameSystem = function (systemId) {
             $scope.isLoading = true;
             $http({
-                method: 'POST',
-                url: 'api/Character/GameSystemStatistics',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: $scope.character
+                method: 'GET',
+                url: 'api/Character/GameSystem/' + $scope.character.System,
+                data: { id: systemId }
 
             }).then(function success(response) {
                 $scope.onSuccess = true;
@@ -51,11 +75,15 @@
 
                 };
 
-
-
             }, function error(response) {
                 $scope.onError = true;
                 $scope.isLoading = false;
+
+                $scope.isSystemLoaded = false;
+                $scope.characterStatistics = [];
+
+                Notification.warning('Sorry, this system is not available yet');
+
             });
 
         };

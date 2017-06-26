@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Entities.Enums;
 
 namespace Entities
 {
@@ -26,6 +27,8 @@ namespace Entities
 
         [Range(1, 100)]
         public int CurrentValue { get; set; }
+
+        public virtual GameSystem GameSystem { get; set; }
 
         public CharacterStatistic()
         {

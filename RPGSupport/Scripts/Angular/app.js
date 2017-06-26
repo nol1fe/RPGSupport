@@ -79,7 +79,7 @@
 
     RPGSupportApp.run(
         ['$rootScope', '$location', '$cookies', '$http', 'store', 'AuthService', 'editableOptions',
-    function ($rootScope, $location, $cookies, $http, store, AuthService, editableOptions) {
+            function ($rootScope, $location, $cookies, $http, store, AuthService, editableOptions) {
 
         $rootScope.user = AuthService.getDefaultUserInfo();
         editableOptions.theme = 'bs3';

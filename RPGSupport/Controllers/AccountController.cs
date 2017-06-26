@@ -176,8 +176,9 @@ namespace RPGSupport.Controllers
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             //userId = User.Identity.GetUserId<int>();
-            var parsedId = 0;
-            Int32.TryParse(userId, out parsedId);
+            //int parsedId = 0;
+            
+            Int32.TryParse(userId, out int parsedId);
 
             if (userId == null || code == null)
             {
@@ -298,7 +299,7 @@ namespace RPGSupport.Controllers
         {
 
             var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
+            if (userId != null )
             {
                 return View("Error");
             }
