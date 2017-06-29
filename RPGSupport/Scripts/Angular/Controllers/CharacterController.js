@@ -17,7 +17,7 @@
             Name: "",
             Gender: "",
             System: "",
-            Statistics: [],
+            Statistics: []
         };
 
         $scope.genders = [];
@@ -35,16 +35,16 @@
         $scope.initController = function () {
             $http({
                 method: 'GET',
-                url: 'api/Character/Gender/Lookup',
+                url: 'api/Character/Gender/Lookup'
             }).then(function success(response) {
-            
+
                 $scope.genders = response.data;
 
             }, function error(response) {
             });
             $http({
                 method: 'GET',
-                url: 'api/Character/GameSystem/Lookup',
+                url: 'api/GameSystem/Lookup'
             }).then(function success(response) {
 
                 $scope.gamesystems = response.data;
@@ -52,13 +52,13 @@
             }, function error(response) {
             });
 
-        }
+        };
 
         $scope.loadGameSystem = function (systemId) {
             $scope.isLoading = true;
             $http({
                 method: 'GET',
-                url: 'api/Character/GameSystem/' + $scope.character.System,
+                url: 'api/GameSystem/' + $scope.character.System,
                 data: { id: systemId }
 
             }).then(function success(response) {
@@ -73,7 +73,7 @@
                 for (var i = 0; i <= response.data.lenght; i++) {
                     $scope.characterStatistics.push(response.data[i]);
 
-                };
+                }
 
             }, function error(response) {
                 $scope.onError = true;

@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using System.Data.Entity.Infrastructure;
+using Entities;
+using System.Web;
 
 namespace DataAccess.Repositories
 {
@@ -26,12 +29,14 @@ namespace DataAccess.Repositories
         }
         public void Delete(TEntity entity)
         {
+            //AddTimestamps(entity);
             _dbset.Attach(entity);
             _dbset.Remove(entity);
         }
 
         public void Edit(TEntity entity)
         {
+            //AddTimestamps(entity);
             _dbset.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
@@ -54,6 +59,7 @@ namespace DataAccess.Repositories
 
         public void Insert(TEntity entity)
         {
+            //AddTimestamps(entity);
             _dbset.Add(entity);
         }
 
@@ -71,6 +77,7 @@ namespace DataAccess.Repositories
             {
                 entities = entities.Include(includeProperty);
             }
+
             return entities.AsNoTracking();
         }
 
@@ -90,5 +97,7 @@ namespace DataAccess.Repositories
             var entities = StartQuery(includeProperties);
             return _dbset.FirstOrDefaultAsync(predicate);
         }
+
+       
     }
 }

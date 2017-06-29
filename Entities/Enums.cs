@@ -19,9 +19,32 @@ namespace Entities
 
         public enum Gender
         {
-            Male = 1,
-            Female = 2
+            Male = 0,
+            Female 
+        }
 
+        public enum GameSessionSlotStatus
+        {
+            Open = 0,
+            Closed,
+            Ready
+        }
+
+        public enum GameSessionState
+        {
+            InLobby = 0,
+            InProgress,
+            Scheduled,
+            Finished
+        }
+
+        public enum TrackedEntityStatus
+        {
+            New = 0,
+            Private,
+            Published,
+            Deleted,
+            IsActive
         }
     }
 }

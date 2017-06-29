@@ -20,6 +20,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System;
+using Interfaces;
 
 [assembly: OwinStartupAttribute(typeof(RPGSupport.Startup))]
 namespace RPGSupport
@@ -43,7 +44,7 @@ namespace RPGSupport
             builder.RegisterType<RPGSupportDb>().AsSelf().InstancePerRequest();
 
             //REGISTER IDENTITY
-
+        
             builder.RegisterType<ApplicationUserStore>().As<IUserStore<User, int>>().InstancePerRequest();
             builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
@@ -61,6 +62,8 @@ namespace RPGSupport
             builder.RegisterType<EntityService<Character>>().As<IEntityService<Character>>().InstancePerRequest();
             builder.RegisterType<EntityService<Statistic>>().As<IEntityService<Statistic>>().InstancePerRequest();
             builder.RegisterType<EntityService<CharacterStatistic>>().As<IEntityService<CharacterStatistic>>().InstancePerRequest();
+            builder.RegisterType<EntityService<GameSession>>().As<IEntityService<GameSession>>().InstancePerRequest();
+            builder.RegisterType<EntityService<GameSessionSlot>>().As<IEntityService<GameSessionSlot>>().InstancePerRequest();
 
 
             // REGISTER CONTROLLERS SO DEPENDENCIES ARE CONSTRUCTOR INJECTED

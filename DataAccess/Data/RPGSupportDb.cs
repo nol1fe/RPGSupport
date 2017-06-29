@@ -14,8 +14,10 @@ namespace DataAccess
 
         public DbSet<User> Users { get; set; }
         public DbSet<Character> Characters { get; set; }
-        public DbSet<Statistic> Statistic { get; set; }
-        public DbSet<CharacterStatistic> CharacterStatistic { get; set; }
-
+        public DbSet<Statistic> Statistics { get; set; }
+        public DbSet<CharacterStatistic> CharacterStatistics { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<GameSession> GameSessions { get; set; }
+        public DbSet<GameSessionSlot> GameSessionSlots { get; set; }
     }
 }

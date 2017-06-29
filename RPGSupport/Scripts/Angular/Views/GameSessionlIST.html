@@ -1,0 +1,18 @@
+﻿<h3>Game Sessions</h3>
+<hr />
+<div class="container" ng-init="initController()">
+    <div class="row">
+        {{message}}
+        <div ng-repeat="gameSession in gameSessions">{{gameSession.Name}}</div>
+    </div>
+</div>
+
+<a href="#!/gamesession/create" class="btn btn-primary pull-right">Create new</a>
+
+
+
+
+<br />
+
+<a back-button class="btn btn-primary pull-left">Back</a>
+<br />

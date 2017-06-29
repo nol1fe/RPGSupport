@@ -1,0 +1,52 @@
+﻿<h3 ng-show="user.isAuthenticated">Create a new Game Session</h3>
+<hr />
+
+<h2 ng-hide="user.isAuthenticated">You have to <a href="#!/login">Log in</a> to create new game session!</h2>
+
+<div class="row" ng-init="initController()">
+    <div class="col-sm-12" ng-show="user.isAuthenticated">
+
+        <label class="radio-inline" ng-repeat="system in gamesystems">
+            <input type="radio" ng-model="gameSession.System" name="System" value="{{system.Key}}" required ng-change="checkIfSystemSelected() || loadGameSystem(character.System)" /> {{system.Name}}
+        </label>
+
+    </div>
+
+    <!--<div class="col-sm-12">
+        <br />
+        <p>Selected system is {{character.System}}    |    Selected: {{isSystemSelected}}</p>
+    </div>-->
+
+    <form class="form-horizontal col-sm-12" name="createForm" ng-submit="create()" ng-hide="isLoading || onSuccess || !isSystemLoaded" ng-show="user.isAuthenticated && isSystemLoaded">
+        <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Name.$invalid && createForm.Name.$touched}">
+            <label for="Name" class="control-label">Name</label>
+            <div>
+                <input pattern="[A-zA-Z]+" minlength="2" maxlength="24" type="text" class="form-control" name="Name" placeholder="Name" ng-model="gameSession.Name" required>
+                <span class="help-block" ng-show="createForm.Name.$error.required && createForm.Name.$touched">Name is required</span>
+                <span class="help-block" ng-show="createForm.Name.$error.minlength && createForm.Name.$touched">Name must be minimum 2 characters long!</span>
+                <span class="help-block" ng-show="createForm.Name.$error.maxlength && createForm.Name.$touched">Name can only be up to 24 characters long!</span>
+                <span class="help-block" ng-show="createForm.Name.$error.pattern && createForm.Name.$touched">Name can only contain letters!</span>
+
+
+            </div>
+        </div>
+        <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Name.$invalid && createForm.Name.$touched}">
+            <label for="Description" class="control-label">Description</label>
+            <div>
+                <textarea pattern="[A-zA-Z]+" minlength="3" class="form-control" rows="5" ng-model="gameSession.Description"></textarea>
+            </div>
+        </div>
+
+        <br />
+        <div class="buttons col-sm-12">
+            <button type="submit" class="btn btn-primary pull-right">Create Game Session</button>
+        </div>
+    </form>
+</div>
+
+
+<div ng-show="isLoading">Loading...</div>
+<!--<div ng-show="onSuccess" class="alert alert-success" role="alert">Success!</div>-->
+
+
+<br />

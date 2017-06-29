@@ -203,7 +203,6 @@ namespace RPGSupport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            //var userId = User.Identity.GetUserId();
             var userId = User.Identity.GetUserId<int>();
 
             if (ModelState.IsValid)
@@ -299,7 +298,7 @@ namespace RPGSupport.Controllers
         {
 
             var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId != null )
+            if (userId != null)
             {
                 return View("Error");
             }

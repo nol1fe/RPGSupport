@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,13 +8,12 @@ using static Entities.Enums;
 
 namespace Entities
 {
-    public class Character : TrackedEntityBase
+    public class GameSession : TrackedEntityBase
     {
         public string Name { get; set; }
 
-        public Gender Gender { get; set; }
-        public GameSystem GameSystem { get; set; }
+        public GameSessionState GameSessionState { get; set; }
 
-        public virtual ICollection<CharacterStatistic> Statistics { get; set; }
+        public virtual ICollection<GameSessionSlot> GameSessionSlots { get; set; }
     }
 }

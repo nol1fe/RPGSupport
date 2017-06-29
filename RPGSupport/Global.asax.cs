@@ -1,4 +1,6 @@
-﻿using RPGSupport.App_Start;
+﻿using Autofac;
+using Interfaces;
+using RPGSupport.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +22,7 @@ namespace RPGSupport
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-
         }
+
     }
 }

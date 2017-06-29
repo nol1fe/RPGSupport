@@ -78,7 +78,8 @@
       
             $http({
                 method: 'PUT',
-                url: 'api/Character/{character.Id}',
+                url: 'api/Character/' + character.Id, // poprawilem, bylo -> url: 'api/Character/{character.Id}', <- co to kurwa jest parzyk :D
+
                 headers: {
                     'Content-Type': 'application/json'
                 },

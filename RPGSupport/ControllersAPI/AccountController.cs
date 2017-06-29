@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Interfaces.Services;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using RPGSupport.Models;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace RPGSupport.ControllersAPI
@@ -18,10 +20,15 @@ namespace RPGSupport.ControllersAPI
         private readonly ApplicationSignInManager _signInManager;
         private readonly ApplicationUserManager _userManager;
         private readonly IAuthenticationManager _authManager;
+        private readonly IEntityService<User> userEntityService;
 
-
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authManager)
+        public AccountController(ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager, 
+            IAuthenticationManager authManager,
+            IEntityService<User> userEntityService)
         {
+
+            this.userEntityService = userEntityService;
             _userManager = userManager;
             _signInManager = signInManager;
             _authManager = authManager;
@@ -59,12 +66,11 @@ namespace RPGSupport.ControllersAPI
                 return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid user");
             }
             var result = await SignInManager.PasswordSignInAsync(value.Email, value.Password, value.RememberMe, shouldLockout: false);
-
-            //var result = SignInManager.PasswordSignInAsync(value.Email, value.Password, value.RememberMe, shouldLockout: false);
-
+                      
             switch (result)
             {
                 case SignInStatus.Success:
+
                     var response = Request.CreateResponse(HttpStatusCode.Moved);
                     string returnUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
                     response.Headers.Location = new Uri(returnUrl);
@@ -88,17 +94,15 @@ namespace RPGSupport.ControllersAPI
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     var response = Request.CreateResponse(HttpStatusCode.Moved);
                     string returnUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
                     response.Headers.Location = new Uri(returnUrl);
+
                     return response;
-          
                 }
-       
             }
-
             return Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid user");
-
         }
     }
 

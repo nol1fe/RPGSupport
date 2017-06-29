@@ -10,6 +10,7 @@ namespace RPGSupport.Controllers
     {
         public ActionResult Index()
         {
+
             return View();
         }
 

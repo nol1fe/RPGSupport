@@ -39,6 +39,15 @@
             templateUrl: paths.viewsPath + "CharacterCreate.html",
             controller: "CharacterController"
         })
+        .when("/gamesessions/", {
+                templateUrl: paths.viewsPath + "GameSessionList.html",
+                controller: "GameSessionListController"
+        })
+        .when("/gamesessions/create", {
+                templateUrl: paths.viewsPath + "GameSessionCreate.html",
+                controller: "GameSessionCreateController"
+        })
+
 
         .otherwise({ retdirectTo: "/" });
 
@@ -75,7 +84,7 @@
     var paths = {
         viewsPath: 'Scripts/Angular/Views/',
         apiPath: '/api/'
-    }
+    };
 
     RPGSupportApp.run(
         ['$rootScope', '$location', '$cookies', '$http', 'store', 'AuthService', 'editableOptions',
