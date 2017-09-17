@@ -20,6 +20,7 @@ namespace Services
         public ApplicationUserManager(IUserStore<User, int> store, IDataProtectionProvider dataProtectionProvider)
             : base(store)
         {
+         
             UserValidator = new UserValidator<User, int>(this)
             {
                 AllowOnlyAlphanumericUserNames = false,

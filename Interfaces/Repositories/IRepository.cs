@@ -27,6 +27,7 @@ namespace Interfaces.Repositories
         Task<List<TEntity>> ToListAsync(params Expression<Func<TEntity, object>>[] includeProperties);
         Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
 
+        //void AddTimestamps(TEntity entity);
 
     }
 }

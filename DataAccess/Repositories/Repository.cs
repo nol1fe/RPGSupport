@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using System.Data.Entity.Infrastructure;
+using Entities;
+using System.Web;
 
 namespace DataAccess.Repositories
 {
@@ -71,6 +74,7 @@ namespace DataAccess.Repositories
             {
                 entities = entities.Include(includeProperty);
             }
+
             return entities.AsNoTracking();
         }
 
@@ -90,5 +94,7 @@ namespace DataAccess.Repositories
             var entities = StartQuery(includeProperties);
             return _dbset.FirstOrDefaultAsync(predicate);
         }
+
+
     }
 }

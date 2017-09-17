@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
-using DataAccess;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Interfaces.UnitOfWork;

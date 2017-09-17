@@ -9,37 +9,25 @@ using static Entities.Enums;
 
 namespace Entities
 {
-    public class CharacterStatistic
+    public class CharacterStatistic : EntityBase
     {
-
-        [Key]
-        public int Id { get; set; }
+        [Range(1, 100)]
+        public int CurrentValue { get; set; }
 
         [ForeignKey("Statistic")]
         public int StatisticId { get; set; }
-
         public virtual Statistic Statistic { get; set; }
 
         [ForeignKey("Character")]
         public int CharacterId { get; set; }
-
         public virtual Character Character { get; set; }
 
-        [Range(1, 100)]
-        public int CurrentValue { get; set; }
-
-        public virtual GameSystem GameSystem { get; set; }
-
-        public CharacterStatistic()
-        {
-
-        }
+        public CharacterStatistic(){}
 
         public CharacterStatistic(int characterId, int statisticId)
         {
             CharacterId = characterId;
             StatisticId = statisticId;
-
         }
     }
 }

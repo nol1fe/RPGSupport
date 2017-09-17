@@ -7,10 +7,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static Entities.Enums;
 
 namespace Entities
 {
-    public class User : IUser<int>
+    public class User :  IUser<int>
     {
         //public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         //{
@@ -36,6 +37,7 @@ namespace Entities
         public string PasswordHash { get; set; }
         public string SecurityStamp { get; set; }
         public bool LockoutEnabled { get; set; }
+        public TrackedEntityStatus TrackedEntityStatus { get; set; }
 
     }
 }

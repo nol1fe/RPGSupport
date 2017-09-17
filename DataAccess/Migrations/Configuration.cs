@@ -30,7 +30,7 @@ namespace DataAccess.Migrations
             //    );
             //
 
-            context.Statistic.AddOrUpdate(s => s.Name,
+            context.Statistics.AddOrUpdate(s => s.Name,
 
                 new Statistic { Id = 1, DefaultValue = 0, Name = "WW", FullName = "Walka wręcz", GameSystem = Enums.GameSystem.Warhammer },
                 new Statistic { Id = 2, DefaultValue = 0, Name = "US", FullName = "Umiejętności strzeleckie", GameSystem = Enums.GameSystem.Warhammer },

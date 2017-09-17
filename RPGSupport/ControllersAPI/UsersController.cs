@@ -50,7 +50,6 @@ namespace RPGSupport
 
         }
 
-      
         [Route("api/Users/GetCurrentUser")]
         public HttpResponseMessage GetCurrent()
         {
@@ -59,11 +58,9 @@ namespace RPGSupport
             if (user != null)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, user);
-
             }
 
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, " User Not Found");
-
         }
 
     }

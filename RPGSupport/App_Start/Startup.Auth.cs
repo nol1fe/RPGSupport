@@ -9,6 +9,7 @@ using RPGSupport.Models;
 using Services;
 using Entities;
 using Microsoft.Owin.Security.OAuth;
+using System.Web;
 
 namespace RPGSupport
 {

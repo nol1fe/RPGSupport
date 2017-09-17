@@ -1,0 +1,49 @@
+﻿<h3 ng-show="user.isAuthenticated">Create a new Game Session</h3>
+<hr />
+
+<h2 ng-hide="user.isAuthenticated">You have to <a href="#!/login">Log in</a> to create new game session!</h2>
+
+<div class="row" ng-init="initController()">
+    <div class="col-sm-12" ng-show="user.isAuthenticated" ng-hide="isLoading || onSuccess">
+        <label class="radio-inline" ng-repeat="system in gamesystems">
+            <input type="radio" ng-model="gameSession.System" name="System" value="{{system.Key}}" required ng-change="checkIfSystemSelected()" /> {{system.Name}}
+        </label>
+    </div>
+    <br />
+    <form class="form-horizontal col-sm-12" name="createForm" ng-submit="create()" ng-hide="isLoading || onSuccess || !isSystemSelected" ng-show="user.isAuthenticated && isSystemLoaded">
+        <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Name.$invalid && createForm.Name.$touched}">
+            <label for="Name" class="control-label">Name</label>
+            <div>
+                <input pattern="[A-zA-Z0-9 ]+$" minlength="2" maxlength="24" class="form-control" name="Name" placeholder="Name" ng-model="gameSession.Name" required>
+                <span class="help-block" ng-show="createForm.Name.$error.required && createForm.Name.$touched">Name is required</span>
+                <span class="help-block" ng-show="createForm.Name.$error.minlength && createForm.Name.$touched">Name must be minimum 2 characters long!</span>
+                <span class="help-block" ng-show="createForm.Name.$error.maxlength && createForm.Name.$touched">Name can only be up to 24 characters long!</span>
+                <span class="help-block" ng-show="createForm.Name.$error.pattern && createForm.Name.$touched">Name can only contains letters and numbers!</span>
+            </div>
+        </div>
+        <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.Description.$invalid && createForm.Description.$touched}">
+            <label for="Description" class="control-label">Description</label>
+            <div>
+                <textarea pattern="[A-zA-Z0-9 ]+$" minlength="3" class="form-control" rows="5" ng-model="gameSession.Description"></textarea>
+                <span class="help-block" ng-show="createForm.Description.$error.pattern && createForm.Description.$touched">Description can only contains letters and numbers!</span>
+            </div>
+        </div>
+        <div class="form-group col-sm-12" ng-class="{'has-error' : createForm.MaximumPlayers.$invalid && createForm.MaximumPlayers.$touched}">
+            <label for="MaximumPlayers" class="control-label">Maximum Players</label>
+            <div>
+                <input pattern="[0-9]+" type="number" min="1" max="10" class="form-control" ng-model="gameSession.MaximumPlayers" required>
+                <span class="help-block" ng-show="createForm.Name.$error.required && createForm.Name.$touched">Set up number of players</span>
+                <span class="help-block" ng-show="createForm.MaximumPlayers.$error.max && createForm.MaximumPlayers.$touched">Maximum number of players is 10</span>
+            </div>
+        </div>
+        <br />
+        <div class="buttons col-sm-12">
+            <button type="submit" class="btn btn-primary pull-right">Create Game Session</button>
+        </div>
+    </form>
+</div>
+
+
+<div ng-show="isLoading">Loading...</div>
+<!--<div ng-show="onSuccess" class="alert alert-success" role="alert">Success!</div>-->
+<br />
