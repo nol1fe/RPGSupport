@@ -1,18 +1,48 @@
-﻿<h3>Game Sessions</h3>
-<hr />
-<div class="container" ng-init="initController()">
-    <div class="row">
-        {{message}}
-        <div ng-repeat="gameSession in gameSessions">{{gameSession.Name}}</div>
+﻿<div class="container" ng-init="initController()">
+    <h3 ng-hide="gameSessionsAny">There is currently no game sessions in this game. Please create new one.</h3>
+    <h3 ng-show="gameSessionsAny">Available game sessions in game : {{gameName}}</h3>
+    <hr ng-show="gameSessionsAny"/>
+    <div class="method" ng-show="gameSessionsAny">
+        <div class="row margin-0 list-header hidden-sm hidden-xs">
+            <div class="col-md-2"><div class="header">Name</div></div>
+            <div class="col-md-2"><div class="header">State</div></div>
+            <div class="col-md-2"><div class="header">System</div></div>
+            <div class="col-md-2"><div class="header">Description</div></div>
+            <div class="col-md-2"><div class="header">Created by</div></div>
+            <div class="col-md-2"><div class="header">Max Players</div></div>
+            <div class="col-md-1"><div class="header"></div></div>
+        </div>
+        <hr />
+        <div class="row margin-0" ng-repeat="gameSession in gameSessions">
+            <div class="col-md-2">
+                {{gameSession.Name}}
+            </div>
+            <div class="col-md-2">
+                {{gameSession.GameState}}
+            </div>
+            <div class="col-md-2">
+                {{showGameSystemValue(gameSession.GameSystem)}}
+            </div>
+            <div class="col-md-2">
+                {{gameSession.Description}}
+            </div>
+            <div class="col-md-2">
+                {{gameSession.CreatedByUserName}}
+            </div>
+            <div class="col-md-1">
+                {{gameSession.MaximumPlayers}}
+            </div>
+            <div class="col-md-1">
+                <a href="#!/game/{{game.Id}}/gamesession/{{gameSession.Id}}" class="btn-sm  btn-success pull-right">Join</a>
+            </div>
+            <hr />
+        </div>
     </div>
+    <br />
+    <br />
+    <hr ng-show="gameSessionsAny" />
+    <a back-button class="btn btn-primary pull-left">Back</a>
+    <a href="#!/game/{{gameId}}/gamesession/create" class="btn btn-primary pull-right">Create new</a>
 </div>
 
-<a href="#!/gamesession/create" class="btn btn-primary pull-right">Create new</a>
 
-
-
-
-<br />
-
-<a back-button class="btn btn-primary pull-left">Back</a>
-<br />

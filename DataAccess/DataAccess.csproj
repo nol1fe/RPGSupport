@@ -133,9 +133,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\RPGSupportDb.cs" />
-    <Compile Include="Migrations\201706261531254_Init.cs" />
-    <Compile Include="Migrations\201706261531254_Init.Designer.cs">
-      <DependentUpon>201706261531254_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201709170909365_Init.cs" />
+    <Compile Include="Migrations\201709170909365_Init.Designer.cs">
+      <DependentUpon>201709170909365_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709171214235_GameSession_GameId_Add.cs" />
+    <Compile Include="Migrations\201709171214235_GameSession_GameId_Add.Designer.cs">
+      <DependentUpon>201709171214235_GameSession_GameId_Add.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709171221304_GameSession_Description_and_MaxPlayers_Add.cs" />
+    <Compile Include="Migrations\201709171221304_GameSession_Description_and_MaxPlayers_Add.Designer.cs">
+      <DependentUpon>201709171221304_GameSession_Description_and_MaxPlayers_Add.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -157,8 +165,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706261531254_Init.resx">
-      <DependentUpon>201706261531254_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201709170909365_Init.resx">
+      <DependentUpon>201709170909365_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709171214235_GameSession_GameId_Add.resx">
+      <DependentUpon>201709171214235_GameSession_GameId_Add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709171221304_GameSession_Description_and_MaxPlayers_Add.resx">
+      <DependentUpon>201709171221304_GameSession_Description_and_MaxPlayers_Add.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

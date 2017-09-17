@@ -2,60 +2,64 @@
 
     var RPGSupportApp = angular.module("RPGSupportApp");
 
-    var GameSessionCreateController = function ($scope, $http, $rootScope, $location, $timeout, Notification, $routeParams) {
+    var GameCreateController = function ($scope, $http, $rootScope, $location, $timeout, Notification) {
         $scope.message = "I'm working!";
         $scope.gamesystems = [];
-        $scope.gameSessions = [];
-        $scope.gameId = $routeParams.id;
+        $scope.games = [];
+
         $scope.onSuccess = false;
         $scope.onError = false;
         $scope.isLoading = false;
         $scope.isSystemSelected = false;
+        $scope.isSystemLoaded = false;
 
-        $scope.checkIfSystemSelected = function () {
-            $scope.isSystemSelected = true;
-        };
 
-        $scope.gameSession = {
+        $scope.game = {
             Name: "",
             Description: "",
             System: "",
-            MaximumPlayers: 0,
-            GameId: $routeParams.id
+
         };
+
 
         $scope.initController = function () {
             $http({
                 method: 'GET',
                 url: 'api/GameSystem/Lookup'
             }).then(function success(response) {
+
                 $scope.gamesystems = response.data;
-                console.log(response.data);
+
             }, function error(response) {
             });
 
         };
 
+        $scope.checkIfSystemSelected = function () {
+            $scope.isSystemSelected = true;
+        };
+
         $scope.create = function () {
+
             $scope.isLoading = true;
             $http({
                 method: 'POST',
-                url: 'api/GameSession/CreateNew',
+                url: 'api/Game/CreateNew',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                data: $scope.gameSession
+                data: $scope.game
 
             }).then(function success(response) {
                 $scope.onSuccess = true;
                 $scope.onError = false;
                 $scope.isLoading = false;
-                Notification.success('Game session created!');
+                Notification.success('Game created!');
 
                 $rootScope.game = $scope.game;
 
                 $timeout(function () {
-                    $location.path("/game/" + gameId + "gamesession/");
+                    $location.path("/game");
                 }, 700);
 
             }, function error(response) {
@@ -64,8 +68,9 @@
             });
 
         };
+
     };
 
-    RPGSupportApp.controller("GameSessionCreateController", GameSessionCreateController);
+    RPGSupportApp.controller("GameCreateController", GameCreateController);
 
 }());

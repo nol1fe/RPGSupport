@@ -1,0 +1,41 @@
+﻿<h3>Games</h3>
+<hr />
+<div class="container" ng-init="initController()">
+    <div class="method">
+        <div class="row margin-0 list-header hidden-sm hidden-xs">
+            <div class="col-md-2"><div class="header">Name</div></div>
+            <div class="col-md-3"><div class="header">Game System</div></div>
+            <div class="col-md-4"><div class="header">Description</div></div>
+            <div class="col-md-2"><div class="header">Created by</div></div>
+            <div class="col-md-1"><div class="header"></div></div>
+        </div>
+        <hr />
+        <div class="row margin-0" ng-repeat="game in games">
+            <div class="col-md-2">
+                {{game.Name}}
+            </div>
+            <div class="col-md-3">
+                {{showGameSystemValue(game.GameSystem)}}
+            </div>
+            <div class="col-md-4">
+                {{game.Description}}
+            </div>
+            <div class="col-md-1">
+                {{game.CreatedByUserName}}
+            </div>
+            <div class="col-md-2">
+                <a href="#!/game/{{game.Id}}/gamesession" class="btn-sm  btn-success pull-right">Join</a>
+            </div>
+            <hr />
+        </div>
+        <br />
+        <br />
+        <hr />
+        <a href="#!/game/create" class="btn btn-primary pull-right">Create new</a>
+        <a back-button class="btn btn-primary pull-left">Back</a>
+    </div>
+</div>
+
+
+
+

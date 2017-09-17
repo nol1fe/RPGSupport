@@ -29,14 +29,12 @@ namespace DataAccess.Repositories
         }
         public void Delete(TEntity entity)
         {
-            //AddTimestamps(entity);
             _dbset.Attach(entity);
             _dbset.Remove(entity);
         }
 
         public void Edit(TEntity entity)
         {
-            //AddTimestamps(entity);
             _dbset.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
@@ -59,7 +57,6 @@ namespace DataAccess.Repositories
 
         public void Insert(TEntity entity)
         {
-            //AddTimestamps(entity);
             _dbset.Add(entity);
         }
 
@@ -98,6 +95,6 @@ namespace DataAccess.Repositories
             return _dbset.FirstOrDefaultAsync(predicate);
         }
 
-       
+
     }
 }

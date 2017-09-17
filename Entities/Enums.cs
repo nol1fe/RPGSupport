@@ -20,7 +20,7 @@ namespace Entities
         public enum Gender
         {
             Male = 0,
-            Female 
+            Female
         }
 
         public enum GameSessionSlotStatus
@@ -32,9 +32,13 @@ namespace Entities
 
         public enum GameSessionState
         {
+            [Display(Name = "Lobby")]
             InLobby = 0,
+            [Display(Name = "Stared")]
             InProgress,
+            [Display(Name = "Shedulded")]
             Scheduled,
+            [Display(Name = "Finished")]
             Finished
         }
 

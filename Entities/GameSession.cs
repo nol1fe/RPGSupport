@@ -10,7 +10,16 @@ namespace Entities
 {
     public class GameSession : TrackedEntityBase
     {
+        [ForeignKey("Game")]
+        public int GameId { get; set; }
+
         public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public int MaximumPlayers { get; set; }
+
+        public virtual Game Game { get; set; }
 
         public GameSessionState GameSessionState { get; set; }
 

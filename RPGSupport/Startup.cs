@@ -64,6 +64,7 @@ namespace RPGSupport
             builder.RegisterType<EntityService<CharacterStatistic>>().As<IEntityService<CharacterStatistic>>().InstancePerRequest();
             builder.RegisterType<EntityService<GameSession>>().As<IEntityService<GameSession>>().InstancePerRequest();
             builder.RegisterType<EntityService<GameSessionSlot>>().As<IEntityService<GameSessionSlot>>().InstancePerRequest();
+            builder.RegisterType<EntityService<Game>>().As<IEntityService<Game>>().InstancePerRequest();
 
 
             // REGISTER CONTROLLERS SO DEPENDENCIES ARE CONSTRUCTOR INJECTED

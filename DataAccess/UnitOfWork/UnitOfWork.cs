@@ -18,7 +18,7 @@ namespace DataAccess.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly RPGSupportDb _context;
-        private DbContextTransaction _transaction;
+        //private DbContextTransaction _transaction;
         private bool _isDisposed = false;
 
 

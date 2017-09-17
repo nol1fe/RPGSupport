@@ -2,7 +2,7 @@ namespace DataAccess.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Init : DbMigration
     {
         public override void Up()
@@ -10,98 +10,98 @@ namespace DataAccess.Migrations
             CreateTable(
                 "dbo.Characters",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Gender = c.Int(nullable: false),
-                        GameSystem = c.Int(nullable: false),
-                        Created = c.DateTime(nullable: false),
-                        Modified = c.DateTime(nullable: false),
-                        ModifiedByUserId = c.Int(nullable: false),
-                        CreatedByUserId = c.Int(nullable: false),
-                        TrackedEntityStatus = c.Int(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    Gender = c.Int(nullable: false),
+                    GameSystem = c.Int(nullable: false),
+                    Created = c.DateTime(nullable: false),
+                    Modified = c.DateTime(nullable: false),
+                    ModifiedByUserId = c.Int(nullable: false),
+                    CreatedByUserId = c.Int(nullable: false),
+                    TrackedEntityStatus = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.CreatedByUserId, cascadeDelete: false)
+                .ForeignKey("dbo.Users", t => t.CreatedByUserId, cascadeDelete: true)
                 .ForeignKey("dbo.Users", t => t.ModifiedByUserId, cascadeDelete: false)
                 .Index(t => t.ModifiedByUserId)
                 .Index(t => t.CreatedByUserId);
-            
+
             CreateTable(
                 "dbo.Users",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserName = c.String(),
-                        Email = c.String(),
-                        PasswordHash = c.String(),
-                        SecurityStamp = c.String(),
-                        LockoutEnabled = c.Boolean(nullable: false),
-                        TrackedEntityStatus = c.Int(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UserName = c.String(),
+                    Email = c.String(),
+                    PasswordHash = c.String(),
+                    SecurityStamp = c.String(),
+                    LockoutEnabled = c.Boolean(nullable: false),
+                    TrackedEntityStatus = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.CharacterStatistics",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        CurrentValue = c.Int(nullable: false),
-                        StatisticId = c.Int(nullable: false),
-                        CharacterId = c.Int(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    CurrentValue = c.Int(nullable: false),
+                    StatisticId = c.Int(nullable: false),
+                    CharacterId = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Characters", t => t.CharacterId, cascadeDelete: true)
+                .ForeignKey("dbo.Characters", t => t.CharacterId, cascadeDelete: false)
                 .ForeignKey("dbo.Statistics", t => t.StatisticId, cascadeDelete: true)
                 .Index(t => t.StatisticId)
                 .Index(t => t.CharacterId);
-            
+
             CreateTable(
                 "dbo.Statistics",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        FullName = c.String(),
-                        DefaultValue = c.Int(nullable: false),
-                        GameSystem = c.Int(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    FullName = c.String(),
+                    DefaultValue = c.Int(nullable: false),
+                    GameSystem = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.Games",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Description = c.String(),
-                        GameSystem = c.Int(nullable: false),
-                        Created = c.DateTime(nullable: false),
-                        Modified = c.DateTime(nullable: false),
-                        ModifiedByUserId = c.Int(nullable: false),
-                        CreatedByUserId = c.Int(nullable: false),
-                        TrackedEntityStatus = c.Int(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    Description = c.String(),
+                    GameSystem = c.Int(nullable: false),
+                    Created = c.DateTime(nullable: false),
+                    Modified = c.DateTime(nullable: false),
+                    ModifiedByUserId = c.Int(nullable: false),
+                    CreatedByUserId = c.Int(nullable: false),
+                    TrackedEntityStatus = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.CreatedByUserId, cascadeDelete: false)
+                .ForeignKey("dbo.Users", t => t.CreatedByUserId, cascadeDelete: true)
                 .ForeignKey("dbo.Users", t => t.ModifiedByUserId, cascadeDelete: false)
                 .Index(t => t.ModifiedByUserId)
                 .Index(t => t.CreatedByUserId);
-            
+
             CreateTable(
                 "dbo.GameSessions",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        GameSessionState = c.Int(nullable: false),
-                        Created = c.DateTime(nullable: false),
-                        Modified = c.DateTime(nullable: false),
-                        ModifiedByUserId = c.Int(nullable: false),
-                        CreatedByUserId = c.Int(nullable: false),
-                        TrackedEntityStatus = c.Int(nullable: false),
-                        Game_Id = c.Int(),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    GameSessionState = c.Int(nullable: false),
+                    Created = c.DateTime(nullable: false),
+                    Modified = c.DateTime(nullable: false),
+                    ModifiedByUserId = c.Int(nullable: false),
+                    CreatedByUserId = c.Int(nullable: false),
+                    TrackedEntityStatus = c.Int(nullable: false),
+                    Game_Id = c.Int(),
+                })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Users", t => t.CreatedByUserId, cascadeDelete: false)
                 .ForeignKey("dbo.Users", t => t.ModifiedByUserId, cascadeDelete: false)
@@ -109,24 +109,24 @@ namespace DataAccess.Migrations
                 .Index(t => t.ModifiedByUserId)
                 .Index(t => t.CreatedByUserId)
                 .Index(t => t.Game_Id);
-            
+
             CreateTable(
                 "dbo.GameSessionSlots",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        SlotStatus = c.Int(nullable: false),
-                        GameSessionId = c.Int(nullable: false),
-                        CharacterId = c.Int(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    SlotStatus = c.Int(nullable: false),
+                    GameSessionId = c.Int(nullable: false),
+                    CharacterId = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Characters", t => t.CharacterId, cascadeDelete: true)
-                .ForeignKey("dbo.GameSessions", t => t.GameSessionId, cascadeDelete: true)
+                .ForeignKey("dbo.Characters", t => t.CharacterId, cascadeDelete: false)
+                .ForeignKey("dbo.GameSessions", t => t.GameSessionId, cascadeDelete: false)
                 .Index(t => t.GameSessionId)
                 .Index(t => t.CharacterId);
-            
+
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.Games", "ModifiedByUserId", "dbo.Users");

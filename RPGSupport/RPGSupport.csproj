@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -283,6 +284,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="ControllersAPI\AccountController.cs" />
     <Compile Include="ControllersAPI\CharacterController.cs" />
+    <Compile Include="ControllersAPI\GameController.cs" />
     <Compile Include="ControllersAPI\GameSessionController.cs" />
     <Compile Include="ControllersAPI\GameSystemController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -293,6 +295,8 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CharacterViewModel.cs" />
+    <Compile Include="Models\GameSessionViewModel.cs" />
+    <Compile Include="Models\GameViewModel.cs" />
     <Compile Include="Models\LookupModel.cs" />
     <Compile Include="Models\ManageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -300,10 +304,13 @@
     <Compile Include="ControllersAPI\UsersController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\angular-ui-notification.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\xeditable.css" />
+    <Content Include="Content\xeditable.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -322,14 +329,18 @@
     <Content Include="Scripts\angular-local-storage.js" />
     <Content Include="Scripts\angular-local-storage.min.js" />
     <Content Include="Scripts\Angular\Controllers\CharacterListController.js" />
-    <Content Include="Scripts\Angular\Controllers\CharacterController.js" />
+    <Content Include="Scripts\Angular\Controllers\CharacterCreateController.js" />
+    <Content Include="Scripts\Angular\Controllers\GameCreate.js" />
     <Content Include="Scripts\Angular\Controllers\GameSessionCreate.js" />
+    <Content Include="Scripts\Angular\Controllers\GameListController.js" />
     <Content Include="Scripts\Angular\Controllers\GameSessionListController.js" />
     <Content Include="Scripts\Angular\Controllers\ManageController.js" />
     <Content Include="Scripts\Angular\Directives\backButtonDirective.js" />
-    <Content Include="Scripts\Angular\Views\Character.html" />
+    <Content Include="Scripts\Angular\Views\CharacterList.html" />
     <Content Include="Scripts\Angular\Views\CharacterCreate.html" />
+    <Content Include="Scripts\Angular\Views\GameCreate.html" />
     <Content Include="Scripts\Angular\Views\GameSessionCreate.html" />
+    <Content Include="Scripts\Angular\Views\GameList.html" />
     <Content Include="Scripts\Angular\Views\GameSessionList.html" />
     <Content Include="Scripts\Angular\Views\Manage.html" />
     <Content Include="Scripts\libs\angular-local-storage.js" />
